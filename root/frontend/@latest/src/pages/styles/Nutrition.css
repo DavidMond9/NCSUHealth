@@ -1,0 +1,66 @@
+.nutrition-page {
+    padding: 1rem;
+    padding-bottom: 140px;
+}
+
+.meal-selector {
+    margin: 1rem 0;
+}
+
+.meal-selector select {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.food-search {
+    margin-bottom: 2rem;
+}
+
+.food-search input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+.search-results {
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.food-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.food-info h3 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.food-info p {
+    margin: 0.25rem 0 0;
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.daily-summary {
+    background: white;
+    padding: 1rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logged-food {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+} 
