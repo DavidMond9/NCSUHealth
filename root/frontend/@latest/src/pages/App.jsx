@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+
 
 // Import style
 import './styles/App.css';
@@ -21,9 +22,10 @@ function App() {
 
         {/* Home page with nested routes */}
         <Route path="/Home" element={<Home />} >
-          {/* Default route is profile */}
-          <Route path="/Home" element={<Profile />} />
+          {/* Index route to automatically load Profile when /Home is accessed */}
+          <Route index element={<Navigate to="profile" replace />} />
 
+          {/* Tabs to access */}
           <Route path="profile" element={<Profile />} />
           <Route path="nutrition" element={<Nutrition />} />
           <Route path="exercise" element={<Exercise />} />
