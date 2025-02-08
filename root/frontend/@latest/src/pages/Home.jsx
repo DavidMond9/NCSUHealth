@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import { Outlet, Link } from 'react-router-dom';
 
 function Home() {
     return (
@@ -9,15 +10,19 @@ function Home() {
                 <p>This is a basic HTML layout with bottom navigation tabs. You can add your content here.</p>
             </div>
 
+            {/* Outlet for nested routes */}
+            <Outlet />
+
             {/* Bottom Navigation */}
             <nav className="bottom-nav">
-                <a href="#profile">Profile</a>
-                <a href="#nutrition">Nutrition</a>
-                <a href="#exercise">Exercise</a>
-                <a href="#settings">Settings</a>
+                <Link to="profile">Profile</Link>
+                <Link to="nutrition">Nutrition</Link>
+                <Link to="exercise">Exercise</Link>
+                <Link to="settings">Settings</Link>
             </nav>
         </div>
     );
 }
 
-export default Home
+export default Home;
+

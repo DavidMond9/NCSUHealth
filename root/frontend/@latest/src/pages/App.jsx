@@ -7,6 +7,10 @@ import './styles/App.css';
 // Import your page components
 import Home from './Home';
 import Auth from './Auth';
+import Profile from './Profile';
+import Nutrition from './Nutrition';
+import Exercise from './Exercise';
+import Settings from './Settings';
 
 function App() {
   return (
@@ -15,10 +19,15 @@ function App() {
         {/* Authentication page */}
         <Route path="/Auth" element={<Auth />} />
 
-        {/* Home page */}
-        <Route path="/Home" element={<Home />} />
+        {/* Home page with nested routes */}
+        <Route path="/Home" element={<Home />} >
+          <Route path="profile" element={<Profile />} />
+          <Route path="nutrition" element={<Nutrition />} />
+          <Route path="exercise" element={<Exercise />} />
+          <Route path="settings" element={<Settings />} />
+        </Route>
 
-        {/* Optionally, add a default route */}
+        {/* Default route */}
         <Route path="/" element={<Auth />} />
       </Routes>
     </BrowserRouter>
