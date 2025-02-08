@@ -1,14 +1,29 @@
 import React from 'react';
 import { Outlet, Link } from 'react-router-dom';
+// Import the logo if it's inside the src folder. Adjust the path as necessary.
+import logo from './assets/NCSUHealth.png';
 
 function Home() {
     return (
-        <div>
-            {/* Main content */}
-            <div className="content">
-                <h1>NCSUHealth</h1>
-                <p>This is a basic HTML layout with bottom navigation tabs. You can add your content here.</p>
+        <div className="home-container">
+            {/* Logo fixed in the top left corner */}
+            <div
+                className="logo-container"
+                style={{
+                    position: 'fixed',
+                    top: '10px',
+                    left: '10px',
+                    zIndex: 1000 // Ensures the logo appears above other content
+                }}
+            >
+                <img
+                    src={logo}  // If your logo is in the public folder, use src="/assets/logo.png" instead.
+                    alt="Logo"
+                    style={{ width: '50px', height: 'auto' }}
+                />
             </div>
+
+            {/* Add any content here if need to be seen in all pages TODO */}
 
             {/* Outlet for nested routes */}
             <Outlet />
@@ -25,4 +40,3 @@ function Home() {
 }
 
 export default Home;
-
