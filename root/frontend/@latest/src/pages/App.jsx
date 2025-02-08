@@ -21,6 +21,9 @@ function App() {
 
         {/* Home page with nested routes */}
         <Route path="/Home" element={<Home />} >
+          {/* Default route is profile */}
+          <Route path="/Home" element={<Profile />} />
+
           <Route path="profile" element={<Profile />} />
           <Route path="nutrition" element={<Nutrition />} />
           <Route path="exercise" element={<Exercise />} />

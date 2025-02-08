@@ -1,5 +1,6 @@
 import React from 'react';
 import { Outlet, Link } from 'react-router-dom';
+
 // Import the logo if it's inside the src folder. Adjust the path as necessary.
 import logo from './assets/NCSUHealth.png';
 
