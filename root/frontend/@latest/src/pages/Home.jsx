@@ -25,7 +25,7 @@ function Home() {
                 style={{
                     position: 'fixed',
                     top: '10px',
-                    left: '10px',
+                    right: '10px',
                     zIndex: 1000 // Ensures the logo appears above other content
                 }}
             >

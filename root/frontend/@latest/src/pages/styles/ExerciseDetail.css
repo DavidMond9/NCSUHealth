@@ -1,19 +1,20 @@
 .exercise-detail {
-    padding: 2rem;
+    padding: clamp(1rem, 3vw, 2rem);
     max-width: 1200px;
     margin: 0 auto;
+    padding-bottom: calc(60px + clamp(1rem, 3vw, 2rem));
 }
 
 .exercise-detail h2 {
     color: var(--wolfpack-red);
-    margin-bottom: 2rem;
-    font-size: 2rem;
+    margin-bottom: clamp(1.5rem, 3vw, 2rem);
+    font-size: clamp(1.5rem, 3vw, 2rem);
 }
 
 .exercise-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+    gap: clamp(1rem, 2vw, 2rem);
 }
 
 .exercise-card {
@@ -29,41 +30,57 @@
 }
 
 .exercise-card h3 {
-    padding: 1rem;
+    padding: clamp(0.75rem, 2vw, 1rem);
     margin: 0;
     background-color: var(--wolfpack-red);
     color: white;
+    font-size: clamp(1rem, 1.5vw, 1.25rem);
 }
 
 .exercise-card img {
     width: 100%;
-    height: 200px;
+    height: clamp(150px, 30vw, 200px);
     object-fit: cover;
 }
 
 .exercise-card p {
-    padding: 1rem;
-    color: #666;
+    padding: clamp(0.75rem, 2vw, 1rem);
+    color: var(--text-primary);
     line-height: 1.6;
+    font-size: clamp(0.9rem, 1.2vw, 1rem);
 }
 
 .set-button {
     width: 100%;
-    padding: 1rem;
+    padding: clamp(0.75rem, 2vw, 1rem);
     background-color: var(--wolfpack-red);
     color: white;
     border: none;
     cursor: pointer;
     transition: background-color 0.3s;
+    font-size: clamp(0.9rem, 1.2vw, 1rem);
 }
 
-.set-button:hover {
+.set-button:hover:not(:disabled) {
     background-color: var(--hover-red);
 }
 
+.set-button:disabled {
+    background-color: var(--light-gray);
+    cursor: not-allowed;
+}
+
 .sets-counter {
-    padding: 0.5rem 1rem;
-    background-color: #f8f9fa;
+    padding: clamp(0.5rem, 1.5vw, 0.75rem);
+    background-color: var(--light-gray);
     text-align: center;
     font-weight: bold;
+    font-size: clamp(0.9rem, 1.2vw, 1rem);
+}
+
+@media (max-width: 768px) {
+    .exercise-card {
+        margin: 0 auto;
+        max-width: 400px;
+    }
 } 
