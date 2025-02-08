@@ -1,26 +1,28 @@
-import React from 'react'
-import { Routes, Route } from 'react-router-dom'
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // Import style
-import './styles/App.css'
+import './styles/App.css';
 
 // Import your page components
-import Home from './Home'
-import Auth from './Auth'
+import Home from './Home';
+import Auth from './Auth';
 
-// Run app and return page information
 function App() {
   return (
-    <div>
+    <BrowserRouter>
       <Routes>
         {/* Authentication page */}
         <Route path="/Auth" element={<Auth />} />
 
         {/* Home page */}
+        <Route path="/Home" element={<Home />} />
+
+        {/* Optionally, add a default route */}
         <Route path="/" element={<Home />} />
       </Routes>
-    </div>
-  )
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
