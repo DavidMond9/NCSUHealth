@@ -23,4 +23,18 @@
   .bottom-nav a:hover {
     background-color: #BB0000;
   }
+
+  .bottom-nav a {
+    /* Your existing link styling */
+    color: #007bff;
+    text-decoration: none;
+    margin: 0 0.5rem;
+  }
+  
+  .disabled-link {
+    color: #aaa;         /* Disabled color */
+    cursor: not-allowed; /* Changes cursor to indicate non-interactivity */
+    pointer-events: none; /* (Optional) Prevents click events in CSS as well */
+  }
+  
   

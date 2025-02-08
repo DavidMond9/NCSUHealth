@@ -1,10 +1,22 @@
 import React from 'react';
 import { Outlet, Link } from 'react-router-dom';
+import { useApp } from './AppContext';
 
 // Import the logo if it's inside the src folder. Adjust the path as necessary.
 import logo from './assets/NCSUHealth.png';
 
 function Home() {
+    const { state } = useApp();
+    // Assume that if state.profile is null/undefined, the profile is incomplete.
+    const profileComplete = !!state.profile;
+
+    // Handler to prevent navigation on disabled links
+    const handleDisabledClick = (e) => {
+        if (!profileComplete) {
+            e.preventDefault();
+        }
+    };
+
     return (
         <div className="home-container">
             {/* Logo fixed in the top left corner */}
@@ -18,23 +30,43 @@ function Home() {
                 }}
             >
                 <img
-                    src={logo}  // If your logo is in the public folder, use src="/assets/logo.png" instead.
+                    src={logo}  // If your logo is in the public folder, use src="/assets/NCSUHealth.png" instead.
                     alt="Logo"
                     style={{ width: '50px', height: 'auto' }}
                 />
             </div>
-
-            {/* Add any content here if need to be seen in all pages TODO */}
 
             {/* Outlet for nested routes */}
             <Outlet />
 
             {/* Bottom Navigation */}
             <nav className="bottom-nav">
+                {/* Profile tab is always enabled */}
                 <Link to="profile">Profile</Link>
-                <Link to="nutrition">Nutrition</Link>
-                <Link to="exercise">Exercise</Link>
-                <Link to="settings">Settings</Link>
+
+
+                {/* The other links have the same styling as Link but are conditionally disabled */}
+                <Link
+                    to="nutrition"
+                    className={profileComplete ? '' : 'disabled-link'}
+                    onClick={handleDisabledClick}
+                >
+                    Nutrition
+                </Link>
+                <Link
+                    to="exercise"
+                    className={profileComplete ? '' : 'disabled-link'}
+                    onClick={handleDisabledClick}
+                >
+                    Exercise
+                </Link>
+                <Link
+                    to="settings"
+                    className={profileComplete ? '' : 'disabled-link'}
+                    onClick={handleDisabledClick}
+                >
+                    Settings
+                </Link>
             </nav>
         </div>
     );

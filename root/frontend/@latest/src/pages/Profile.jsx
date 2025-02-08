@@ -1,61 +1,205 @@
-import React from 'react'
-import { PieChart } from 'react-minimal-pie-chart'
-import './styles/Profile.css'
+import React, { useState } from 'react';
+import { useApp } from './AppContext';
+import { PieChart } from 'react-minimal-pie-chart';
+import './styles/Profile.css';
 
 function Profile() {
-    // This would come from your global state
-    const profile = {
-        name: 'John Doe',
-        gender: 'Male',
-        birthDate: '1990-01-01',
-        height: '180',
-        weight: '75',
-        goal: 'maintaining',
-        macros: {
-            protein: 30,
-            carbs: 50,
-            fats: 20
+    const { state, dispatch } = useApp();
+
+    // Use global profile if available; otherwise use an initial empty object.
+    const [profileData, setProfileData] = useState(
+        state.profile || {
+            name: '',
+            gender: '',
+            birthDate: '',
+            height: '',
+            weight: '',
+            goal: '', // Expected values: "maintenance", "gaining", "losing"
+            timeframe: '',
+            activityLevel: '',
+            macros: {
+                protein: 30,
+                carbs: 50,
+                fats: 20
+            }
         }
+    );
+
+    // Check if the profile is complete based on required fields.
+    const isComplete =
+        profileData.name &&
+        profileData.gender &&
+        profileData.birthDate &&
+        profileData.height &&
+        profileData.weight &&
+        profileData.goal &&
+        profileData.timeframe &&
+        profileData.activityLevel;
+
+    // Update the local form state
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setProfileData((prev) => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    // When the form is submitted, update the global state
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (isComplete) {
+            dispatch({ type: 'SET_PROFILE', payload: profileData });
+        } else {
+            alert('Please fill out all fields.');
+        }
+    };
+
+    // If the profile hasn't been set in the global state, show the setup form.
+    if (!state.profile) {
+        return (
+            <div className="profile-page">
+                <h1>
+                    Hi {profileData.name || 'there'}, We need some info to get you started:
+                </h1>
+                <form onSubmit={handleSubmit} className="profile-setup-form">
+                    <label>
+                        Name:
+                        <input
+                            type="text"
+                            name="name"
+                            value={profileData.name}
+                            onChange={handleChange}
+                            required
+                        />
+                    </label>
+                    <label>
+                        Birth Date:
+                        <input
+                            type="date"
+                            name="birthDate"
+                            value={profileData.birthDate}
+                            onChange={handleChange}
+                            required
+                        />
+                    </label>
+                    <label>
+                        Gender:
+                        <input
+                            type="text"
+                            name="gender"
+                            value={profileData.gender}
+                            onChange={handleChange}
+                            required
+                        />
+                    </label>
+                    <label>
+                        Height (cm):
+                        <input
+                            type="number"
+                            name="height"
+                            value={profileData.height}
+                            onChange={handleChange}
+                            required
+                        />
+                    </label>
+                    <label>
+                        Weight (kg):
+                        <input
+                            type="number"
+                            name="weight"
+                            value={profileData.weight}
+                            onChange={handleChange}
+                            required
+                        />
+                    </label>
+                    <label>
+                        Goal:
+                        <select
+                            name="goal"
+                            value={profileData.goal}
+                            onChange={handleChange}
+                            required
+                        >
+                            <option value="">Select...</option>
+                            <option value="maintenance">Maintenance</option>
+                            <option value="gaining">Gaining</option>
+                            <option value="losing">Losing</option>
+                        </select>
+                    </label>
+                    <label>
+                        Timeframe:
+                        <input
+                            type="text"
+                            name="timeframe"
+                            value={profileData.timeframe}
+                            onChange={handleChange}
+                            placeholder="e.g., 3 months"
+                            required
+                        />
+                    </label>
+                    <label>
+                        Activity Level:
+                        <input
+                            type="text"
+                            name="activityLevel"
+                            value={profileData.activityLevel}
+                            onChange={handleChange}
+                            placeholder="e.g., Sedentary, Active"
+                            required
+                        />
+                    </label>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        );
     }
 
+    // If the profile is complete (exists in global state), display the profile details.
     const macroData = [
-        { title: 'Protein', value: profile.macros.protein, color: '#4CAF50' },
-        { title: 'Carbs', value: profile.macros.carbs, color: '#2196F3' },
-        { title: 'Fats', value: profile.macros.fats, color: '#FFC107' }
-    ]
+        { title: 'Protein', value: state.profile.macros.protein, color: '#4CAF50' },
+        { title: 'Carbs', value: state.profile.macros.carbs, color: '#2196F3' },
+        { title: 'Fats', value: state.profile.macros.fats, color: '#FFC107' }
+    ];
 
     return (
         <div className="profile-page">
             <h1>Profile</h1>
-
             <div className="profile-card">
                 <div className="profile-info">
-                    <h2>{profile.name}</h2>
+                    <h2>{state.profile.name}</h2>
                     <div className="info-grid">
                         <div className="info-item">
                             <label>Gender</label>
-                            <span>{profile.gender}</span>
+                            <span>{state.profile.gender}</span>
                         </div>
                         <div className="info-item">
                             <label>Birth Date</label>
-                            <span>{new Date(profile.birthDate).toLocaleDateString()}</span>
+                            <span>{new Date(state.profile.birthDate).toLocaleDateString()}</span>
                         </div>
                         <div className="info-item">
                             <label>Height</label>
-                            <span>{profile.height} cm</span>
+                            <span>{state.profile.height} cm</span>
                         </div>
                         <div className="info-item">
                             <label>Weight</label>
-                            <span>{profile.weight} kg</span>
+                            <span>{state.profile.weight} kg</span>
                         </div>
                         <div className="info-item">
                             <label>Goal</label>
-                            <span>{profile.goal}</span>
+                            <span>{state.profile.goal}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Timeframe</label>
+                            <span>{state.profile.timeframe}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Activity Level</label>
+                            <span>{state.profile.activityLevel}</span>
                         </div>
                     </div>
                 </div>
             </div>
-
             <div className="macro-chart">
                 <h3>Macro Distribution</h3>
                 <div className="chart-container">
@@ -70,14 +214,21 @@ function Profile() {
                 <div className="macro-legend">
                     {macroData.map((macro) => (
                         <div key={macro.title} className="legend-item">
-                            <span className="color-dot" style={{ backgroundColor: macro.color }}></span>
-                            <span>{macro.title}: {macro.value}%</span>
+                            <span
+                                className="color-dot"
+                                style={{ backgroundColor: macro.color }}
+                            ></span>
+                            <span>
+                                {macro.title}: {macro.value}%
+                            </span>
                         </div>
                     ))}
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 export default Profile;
+
+
