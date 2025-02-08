@@ -19,7 +19,7 @@ function App() {
         <Route path="/Home" element={<Home />} />
 
         {/* Optionally, add a default route */}
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Auth />} />
       </Routes>
     </BrowserRouter>
   );

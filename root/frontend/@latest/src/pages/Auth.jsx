@@ -9,10 +9,10 @@ function Auth() {
         event.preventDefault()
 
         if (isLoginView) {
-            // Handle login logic here
+            // Handle login logic here TODO
             console.log('Logging in...')
         } else {
-            // Handle registration logic here
+            // Handle registration logic here TODO
             console.log('Registering...')
         }
     }
@@ -61,4 +61,4 @@ function Auth() {
     )
 }
 
-export default AuthPage
+export default Auth;
