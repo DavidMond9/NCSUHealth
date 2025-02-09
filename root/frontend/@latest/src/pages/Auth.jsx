@@ -17,10 +17,26 @@ function Auth() {
         event.preventDefault();
 
         if (isLoginView) {
-            // Handle login logic here
-            console.log('Logging in...');
-            // After successful login, redirect to Home
-            navigate('/Home');
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/login/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username,
+                        password
+                    })
+                });
+                const data = await response.json();
+                if (!response.ok) {
+                    alert(data.error); // Show error message to user
+                } else {
+                    console.log('Login success:', data.message);
+                    navigate('/Home');
+                }
+            } catch (error) {
+                console.error('Network error:', error);
+                alert('Network error occurred');
+            }
         } else {
             // Handle registration logic here
             console.log('Registering...');
