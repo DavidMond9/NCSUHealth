@@ -6,17 +6,7 @@
   margin: 0 auto;
 }
 
-.logo-container {
-  position: fixed;
-  top: clamp(10px, 2vw, 20px);
-  right: clamp(10px, 2vw, 20px);
-  z-index: 1000;
-}
 
-.logo-container img {
-  width: clamp(40px, 8vw, 60px);
-  height: auto;
-}
 
 .bottom-nav {
   position: fixed;

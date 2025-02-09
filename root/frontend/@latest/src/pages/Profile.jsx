@@ -58,99 +58,101 @@ function Profile() {
     // If the profile hasn't been set in the global state, show the setup form.
     if (!state.profile) {
         return (
-            <div className="profile-page">
-                <h1>
-                    Hi {profileData.name || 'there'}, We need some info to get you started:
-                </h1>
-                <form onSubmit={handleSubmit} className="profile-setup-form">
-                    <label>
-                        Name:
-                        <input
-                            type="text"
-                            name="name"
-                            value={profileData.name}
-                            onChange={handleChange}
-                            required
-                        />
-                    </label>
-                    <label>
-                        Birth Date:
-                        <input
-                            type="date"
-                            name="birthDate"
-                            value={profileData.birthDate}
-                            onChange={handleChange}
-                            required
-                        />
-                    </label>
-                    <label>
-                        Gender:
-                        <input
-                            type="text"
-                            name="gender"
-                            value={profileData.gender}
-                            onChange={handleChange}
-                            required
-                        />
-                    </label>
-                    <label>
-                        Height (cm):
-                        <input
-                            type="number"
-                            name="height"
-                            value={profileData.height}
-                            onChange={handleChange}
-                            required
-                        />
-                    </label>
-                    <label>
-                        Weight (kg):
-                        <input
-                            type="number"
-                            name="weight"
-                            value={profileData.weight}
-                            onChange={handleChange}
-                            required
-                        />
-                    </label>
-                    <label>
-                        Goal:
-                        <select
-                            name="goal"
-                            value={profileData.goal}
-                            onChange={handleChange}
-                            required
-                        >
-                            <option value="">Select...</option>
-                            <option value="maintenance">Maintenance</option>
-                            <option value="gaining">Gaining</option>
-                            <option value="losing">Losing</option>
-                        </select>
-                    </label>
-                    <label>
-                        Timeframe:
-                        <input
-                            type="text"
-                            name="timeframe"
-                            value={profileData.timeframe}
-                            onChange={handleChange}
-                            placeholder="e.g., 3 months"
-                            required
-                        />
-                    </label>
-                    <label>
-                        Activity Level:
-                        <input
-                            type="text"
-                            name="activityLevel"
-                            value={profileData.activityLevel}
-                            onChange={handleChange}
-                            placeholder="e.g., Sedentary, Active"
-                            required
-                        />
-                    </label>
-                    <button type="submit">Submit</button>
-                </form>
+            <div className="profile-section">
+                <div className="profile-container">
+                    <h1>
+                        Hi {profileData.name || 'there'}, We need some info to get you started:
+                    </h1>
+                    <form onSubmit={handleSubmit} className="profile-setup-form">
+                        <label>
+                            Name:
+                            <input
+                                type="text"
+                                name="name"
+                                value={profileData.name}
+                                onChange={handleChange}
+                                required
+                            />
+                        </label>
+                        <label>
+                            Birth Date:
+                            <input
+                                type="date"
+                                name="birthDate"
+                                value={profileData.birthDate}
+                                onChange={handleChange}
+                                required
+                            />
+                        </label>
+                        <label>
+                            Gender:
+                            <input
+                                type="text"
+                                name="gender"
+                                value={profileData.gender}
+                                onChange={handleChange}
+                                required
+                            />
+                        </label>
+                        <label>
+                            Height (cm):
+                            <input
+                                type="number"
+                                name="height"
+                                value={profileData.height}
+                                onChange={handleChange}
+                                required
+                            />
+                        </label>
+                        <label>
+                            Weight (kg):
+                            <input
+                                type="number"
+                                name="weight"
+                                value={profileData.weight}
+                                onChange={handleChange}
+                                required
+                            />
+                        </label>
+                        <label>
+                            Goal:
+                            <select
+                                name="goal"
+                                value={profileData.goal}
+                                onChange={handleChange}
+                                required
+                            >
+                                <option value="">Select...</option>
+                                <option value="maintenance">Maintenance</option>
+                                <option value="gaining">Gaining</option>
+                                <option value="losing">Losing</option>
+                            </select>
+                        </label>
+                        <label>
+                            Timeframe:
+                            <input
+                                type="text"
+                                name="timeframe"
+                                value={profileData.timeframe}
+                                onChange={handleChange}
+                                placeholder="e.g., 3 months"
+                                required
+                            />
+                        </label>
+                        <label>
+                            Activity Level:
+                            <input
+                                type="text"
+                                name="activityLevel"
+                                value={profileData.activityLevel}
+                                onChange={handleChange}
+                                placeholder="e.g., Sedentary, Active"
+                                required
+                            />
+                        </label>
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
             </div>
         );
     }
@@ -163,66 +165,68 @@ function Profile() {
     ];
 
     return (
-        <div className="profile-page">
-            <h1>Profile</h1>
-            <div className="profile-card">
-                <div className="profile-info">
-                    <h2>{state.profile.name}</h2>
-                    <div className="info-grid">
-                        <div className="info-item">
-                            <label>Gender</label>
-                            <span>{state.profile.gender}</span>
-                        </div>
-                        <div className="info-item">
-                            <label>Birth Date</label>
-                            <span>{new Date(state.profile.birthDate).toLocaleDateString()}</span>
-                        </div>
-                        <div className="info-item">
-                            <label>Height</label>
-                            <span>{state.profile.height} cm</span>
-                        </div>
-                        <div className="info-item">
-                            <label>Weight</label>
-                            <span>{state.profile.weight} kg</span>
-                        </div>
-                        <div className="info-item">
-                            <label>Goal</label>
-                            <span>{state.profile.goal}</span>
-                        </div>
-                        <div className="info-item">
-                            <label>Timeframe</label>
-                            <span>{state.profile.timeframe}</span>
-                        </div>
-                        <div className="info-item">
-                            <label>Activity Level</label>
-                            <span>{state.profile.activityLevel}</span>
+        <div className="profile-section">
+            <div className="profile-container">
+                <h1>Profile</h1>
+                <div className="profile-card">
+                    <div className="profile-info">
+                        <h2>{state.profile.name}</h2>
+                        <div className="info-grid">
+                            <div className="info-item">
+                                <label>Gender</label>
+                                <span>{state.profile.gender}</span>
+                            </div>
+                            <div className="info-item">
+                                <label>Birth Date</label>
+                                <span>{new Date(state.profile.birthDate).toLocaleDateString()}</span>
+                            </div>
+                            <div className="info-item">
+                                <label>Height</label>
+                                <span>{state.profile.height} cm</span>
+                            </div>
+                            <div className="info-item">
+                                <label>Weight</label>
+                                <span>{state.profile.weight} kg</span>
+                            </div>
+                            <div className="info-item">
+                                <label>Goal</label>
+                                <span>{state.profile.goal}</span>
+                            </div>
+                            <div className="info-item">
+                                <label>Timeframe</label>
+                                <span>{state.profile.timeframe}</span>
+                            </div>
+                            <div className="info-item">
+                                <label>Activity Level</label>
+                                <span>{state.profile.activityLevel}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="macro-chart">
-                <h3>Macro Distribution</h3>
-                <div className="chart-container">
-                    <PieChart
-                        data={macroData}
-                        lineWidth={40}
-                        paddingAngle={2}
-                        label={({ dataEntry }) => `${dataEntry.title} ${dataEntry.value}%`}
-                        labelStyle={{ fontSize: '5px' }}
-                    />
-                </div>
-                <div className="macro-legend">
-                    {macroData.map((macro) => (
-                        <div key={macro.title} className="legend-item">
-                            <span
-                                className="color-dot"
-                                style={{ backgroundColor: macro.color }}
-                            ></span>
-                            <span>
-                                {macro.title}: {macro.value}%
-                            </span>
-                        </div>
-                    ))}
+                <div className="macro-chart">
+                    <h3>Macro Distribution</h3>
+                    <div className="chart-container">
+                        <PieChart
+                            data={macroData}
+                            lineWidth={40}
+                            paddingAngle={2}
+                            label={({ dataEntry }) => `${dataEntry.title} ${dataEntry.value}%`}
+                            labelStyle={{ fontSize: '5px' }}
+                        />
+                    </div>
+                    <div className="macro-legend">
+                        {macroData.map((macro) => (
+                            <div key={macro.title} className="legend-item">
+                                <span
+                                    className="color-dot"
+                                    style={{ backgroundColor: macro.color }}
+                                ></span>
+                                <span>
+                                    {macro.title}: {macro.value}%
+                                </span>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
@@ -230,5 +234,3 @@ function Profile() {
 }
 
 export default Profile;
-
-

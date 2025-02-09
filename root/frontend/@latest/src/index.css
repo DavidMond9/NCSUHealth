@@ -1,68 +1,78 @@
+/* Root variables for consistent color themes */
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --wolfpack-red: #CC0000;
+  --wolfpack-black: #000000;
+  --light-gray: #f4f4f4;
+  --text-primary: #333333;
+  --hover-red: #990000;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
+/* Ensure the body and HTML take the full viewport and reset default margins/padding */
+html, body {
   margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden; /* Prevents horizontal scrolling issues */
+  font-family: Arial, sans-serif; /* Set a clean, consistent font */
+  background-color: white;
+}
+
+/* Prevent unwanted margins from global containers */
+#root, .App {
+  height: 100%;
+  width: 100%;
+}
+
+/* Make sure everything inside .landing-page is properly centered */
+.landing-page {
   display: flex;
-  place-items: center;
-  min-width: 320px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* Ensure child elements of .landing-page don't have unintended margins */
+.landing-page > * {
+  width: 100%;
+  max-width: 1200px; /* Keeps content centered and not too wide */
+  text-align: center;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
+/* Global resets for elements that might introduce inconsistencies */
+h1, h2, h3, h4, p {
+  margin: 0;
+  padding: 0;
+}
+
+button, input, textarea {
   font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
+/* Basic a tag styling (ensures no default colors interfere) */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Ensures all sections maintain proper spacing */
+section {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Ensure form elements don't cause layout shifts */
+form {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .landing-page {
+      padding: 20px;
   }
 }
