@@ -1,0 +1,245 @@
+.exercise-detail {
+    padding: clamp(1rem, 3vw, 2rem);
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: calc(60px + clamp(1rem, 3vw, 2rem));
+}
+
+.exercise-detail h2 {
+    color: var(--wolfpack-red);
+    margin-bottom: clamp(1.5rem, 3vw, 2rem);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.exercise-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+    gap: clamp(1rem, 2vw, 2rem);
+}
+
+.exercise-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column; /* Ensures content stacks correctly */
+}
+
+.exercise-card:hover {
+    transform: translateY(-5px);
+}
+
+.exercise-card h3 {
+    padding: clamp(0.75rem, 2vw, 1rem);
+    margin: 0;
+    background-color: var(--wolfpack-red);
+    color: white;
+    font-size: clamp(1rem, 1.5vw, 1.25rem);
+}
+
+.exercise-card img {
+    width: 100%;
+    height: clamp(150px, 30vw, 200px);
+    object-fit: cover;
+}
+
+.exercise-card p {
+    padding: clamp(0.75rem, 2vw, 1rem);
+    color: var(--text-primary);
+    line-height: 1.6;
+    font-size: clamp(0.9rem, 1.2vw, 1rem);
+    flex-grow: 1; /* Allows content to expand without pushing buttons */
+}
+
+.sets-counter {
+    padding: clamp(0.5rem, 1.5vw, 0.75rem);
+    background-color: var(--light-gray);
+    text-align: center;
+    font-weight: bold;
+    font-size: clamp(0.9rem, 1.2vw, 1rem);
+}
+
+.set-button {
+    width: 100%;
+    padding: clamp(0.75rem, 2vw, 1rem);
+    background-color: var(--wolfpack-red);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: clamp(0.9rem, 1.2vw, 1rem);
+    margin-top: auto; /* Ensures button sticks to the bottom */
+}
+
+
+.set-button:hover:not(:disabled) {
+    background-color: var(--hover-red);
+}
+
+.set-button:disabled {
+    background-color: var(--light-gray);
+    cursor: not-allowed;
+}
+
+.sets-counter {
+    padding: clamp(0.5rem, 1.5vw, 0.75rem);
+    background-color: var(--light-gray);
+    text-align: center;
+    font-weight: bold;
+    font-size: clamp(0.9rem, 1.2vw, 1rem);
+}
+
+@media (max-width: 768px) {
+    .exercise-card {
+        margin: 0 auto;
+        max-width: 400px;
+    }
+}
+
+
+
+
+/* Parent container for layout */
+.exercise-page {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f7f9fc;
+}
+
+/* Sidebar Styling */
+.exercise-sidebar {
+    width: 250px;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.exercise-sidebar h3 {
+    color: var(--wolfpack-red);
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+.exercise-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.exercise-sidebar li {
+    padding: 12px 15px;
+    margin: 5px 0;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.exercise-sidebar li:hover {
+    background-color: #f0f0f0;
+    color: var(--wolfpack-red);
+}
+
+.exercise-sidebar li.active {
+    background-color: var(--wolfpack-red);
+    color: white;
+}
+
+.exercise-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* Exercise Content Container */
+.exercise-container {
+    flex: 1;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent content overflow */
+}
+
+/* Scrollable Grid */
+.exercise-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+/* Fixed-size Exercise Cards */
+.exercise-card {
+    background-color: #fff;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    height: 300px; /* Fixed height */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribute content evenly */
+}
+
+.exercise-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+/* Buttons */
+.set-button {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background-color: #cc0000;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.set-button:hover {
+    background-color: #0056b3;
+}
+
+.set-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .exercise-page {
+        flex-direction: column;
+    }
+
+    .exercise-sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+        padding: 10px;
+    }
+
+    .exercise-sidebar ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .exercise-sidebar li {
+        flex: 1 1 auto;
+        text-align: center;
+        padding: 8px 12px;
+    }
+}
