@@ -53,6 +53,7 @@ def login_view(request):
         # Check if user exists and password matches
         user = User.objects(username=username).first()
         if user and user.password == password:  # Note: In production, use proper password hashing
+            # request.session['username'] = user.username
             return JsonResponse({'message': 'Login successful'})
         return JsonResponse({'error': 'Invalid credentials'}, status=400)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
@@ -62,4 +63,32 @@ def logout_view(request):
     if request.method == 'POST':
         logout(request)
         return JsonResponse({'message': 'Logout successful'})
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+@csrf_exempt
+def update_profile_view(request):
+    if request.method == 'POST':
+        # Retrieve the username from the session
+        username = request.session.get('username')
+
+        if not username:
+            return JsonResponse({'error': 'User not authenticated'}, status=401)
+
+        data = json.loads(request.body)
+
+        user = User.objects(username=username).first()
+        if user:
+            user.update(
+                name=data.get('name'),
+                gender=data.get('gender'),
+                birth_date=data.get('birthDate'),
+                height=data.get('height'),
+                weight=data.get('weight'),
+                goal=data.get('goal'),
+                timeframe=data.get('timeframe'),
+                activity_level=data.get('activityLevel')
+            )
+            user.reload()
+            return JsonResponse(user.to_mongo().to_dict(), status=200)
+        return JsonResponse({'error': 'User not found'}, status=404)
     return JsonResponse({'error': 'Invalid request method'}, status=405)

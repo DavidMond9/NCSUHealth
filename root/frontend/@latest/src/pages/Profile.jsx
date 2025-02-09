@@ -46,10 +46,26 @@ function Profile() {
     };
 
     // When the form is submitted, update the global state
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (isComplete) {
-            dispatch({ type: 'SET_PROFILE', payload: profileData });
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/update-profile/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(profileData),
+                });
+
+                if (response.ok) {
+                    const updatedProfile = await response.json();
+                    dispatch({ type: 'SET_PROFILE', payload: updatedProfile });
+                } else {
+                    alert('Failed to update profile. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                alert('Network error occurred.');
+            }
         } else {
             alert('Please fill out all fields.');
         }
