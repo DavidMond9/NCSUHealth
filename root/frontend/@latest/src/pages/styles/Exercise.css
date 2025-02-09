@@ -1,0 +1,95 @@
+.exercise-container {
+    display: flex;
+    min-height: 100vh;
+    padding-bottom: 60px;
+}
+
+.exercise-sidebar {
+    width: clamp(200px, 20vw, 300px);
+    background-color: var(--light-gray);
+    padding: clamp(1rem, 2vw, 1.5rem);
+    border-right: 1px solid #ddd;
+}
+
+.exercise-sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.exercise-sidebar li {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.exercise-sidebar li:hover {
+    background-color: #e0e0e0;
+}
+
+.exercise-main {
+    flex: 1;
+    padding: clamp(1rem, 3vw, 2rem);
+    overflow-y: auto;
+}
+
+.exercise-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.exercise-list {
+    margin-bottom: 40px;
+}
+
+.exercise-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.sets-counter {
+    font-weight: bold;
+}
+
+.nutrition-tracker {
+    margin-top: clamp(1.5rem, 4vw, 2.5rem);
+    padding-top: 20px;
+    border-top: 2px solid #eee;
+}
+
+.progress-bar {
+    margin-bottom: clamp(0.8rem, 2vw, 1.2rem);
+}
+
+.progress-bar label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.progress-bar progress {
+    width: 100%;
+    height: clamp(15px, 3vw, 20px);
+}
+
+.progress-bar span {
+    display: block;
+    text-align: right;
+    font-size: 0.9em;
+    color: #666;
+}
+
+@media (max-width: 768px) {
+    .exercise-container {
+        flex-direction: column;
+    }
+
+    .exercise-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+    }
+}

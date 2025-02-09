@@ -1,23 +1,75 @@
-import React from 'react'
+import React from 'react';
+import { Outlet, Link } from 'react-router-dom';
+import { useApp } from './AppContext';
+
+// Import the logo if it's inside the src folder. Adjust the path as necessary.
+import logo from './assets/NCSUHealth.png';
 
 function Home() {
+    const { state } = useApp();
+    // Assume that if state.profile is null/undefined, the profile is incomplete.
+    const profileComplete = !!state.profile;
+
+    // Handler to prevent navigation on disabled links
+    const handleDisabledClick = (e) => {
+        if (!profileComplete) {
+            e.preventDefault();
+        }
+    };
+
     return (
-        <div>
-            {/* Main content */}
-            <div className="content">
-                <h1>NCSUHealth</h1>
-                <p>This is a basic HTML layout with bottom navigation tabs. You can add your content here.</p>
+        <div className="home-container">
+            {/* Logo fixed in the top left corner */}
+            <div
+                className="logo-container"
+                style={{
+                    position: 'fixed',
+                    top: '10px',
+                    right: '10px',
+                    zIndex: 1000 // Ensures the logo appears above other content
+                }}
+            >
+                <img
+                    src={logo}  // If your logo is in the public folder, use src="/assets/NCSUHealth.png" instead.
+                    alt="Logo"
+                    style={{ width: '50px', height: 'auto' }}
+                />
             </div>
+
+            {/* Outlet for nested routes */}
+            <Outlet />
 
             {/* Bottom Navigation */}
             <nav className="bottom-nav">
-                <a href="#profile">Profile</a>
-                <a href="#nutrition">Nutrition</a>
-                <a href="#exercise">Exercise</a>
-                <a href="#settings">Settings</a>
+                {/* Profile tab is always enabled */}
+                <Link to="profile">Profile</Link>
+
+
+                {/* The other links have the same styling as Link but are conditionally disabled */}
+                <Link
+                    to="nutrition"
+                    className={profileComplete ? '' : 'disabled-link'}
+                    onClick={handleDisabledClick}
+                >
+                    Nutrition
+                </Link>
+                <Link
+                    to="exercise"
+                    className={profileComplete ? '' : 'disabled-link'}
+                    onClick={handleDisabledClick}
+                >
+                    Exercise
+                </Link>
+                <Link
+                    to="settings"
+                    className={profileComplete ? '' : 'disabled-link'}
+                    onClick={handleDisabledClick}
+                >
+                    Settings
+                </Link>
             </nav>
         </div>
     );
 }
 
-export default Home
+export default Home;

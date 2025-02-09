@@ -1,0 +1,102 @@
+.nutrition-page {
+    padding: clamp(1rem, 3vw, 2rem);
+    padding-bottom: calc(60px + clamp(1rem, 3vw, 2rem));
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.meal-selector {
+    margin: clamp(1rem, 2vw, 1.5rem) 0;
+}
+
+.meal-selector select {
+    width: 100%;
+    padding: clamp(0.5rem, 1.5vw, 0.75rem);
+    border-radius: 8px;
+    border: 1px solid var(--light-gray);
+    font-size: clamp(14px, 1.5vw, 16px);
+}
+
+.food-search {
+    margin-bottom: clamp(1.5rem, 3vw, 2rem);
+}
+
+.food-search input {
+    width: 100%;
+    padding: clamp(0.75rem, 2vw, 1rem);
+    border: 1px solid var(--light-gray);
+    border-radius: 8px;
+    font-size: clamp(14px, 1.5vw, 16px);
+}
+
+.search-results {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.food-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: clamp(0.75rem, 2vw, 1rem);
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.food-item button {
+    background-color: var(--wolfpack-red);
+    color: white;
+    border: none;
+    padding: clamp(0.5rem, 1.5vw, 0.75rem) clamp(1rem, 2vw, 1.5rem);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.food-item button:hover {
+    background-color: var(--hover-red);
+}
+
+.food-info h3 {
+    margin: 0;
+    font-size: clamp(0.9rem, 1.5vw, 1rem);
+}
+
+.food-info p {
+    margin: 0.25rem 0 0;
+    font-size: clamp(0.8rem, 1.2vw, 0.875rem);
+    color: var(--text-primary);
+}
+
+.daily-summary {
+    background: white;
+    padding: clamp(1rem, 2.5vw, 1.5rem);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.daily-summary h2 {
+    color: var(--wolfpack-red);
+    margin-bottom: clamp(1rem, 2vw, 1.5rem);
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+}
+
+.logged-food {
+    display: flex;
+    justify-content: space-between;
+    padding: clamp(0.5rem, 1.5vw, 0.75rem) 0;
+    border-bottom: 1px solid var(--light-gray);
+    font-size: clamp(0.9rem, 1.5vw, 1rem);
+}
+
+@media (max-width: 768px) {
+    .food-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .food-item button {
+        width: 100%;
+    }
+} 
