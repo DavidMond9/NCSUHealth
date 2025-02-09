@@ -62,6 +62,37 @@ function appReducer(state, action) {
                     }
                 }
             }
+        case 'UPDATE_FOOD_LOG':
+            return {
+                ...state,
+                nutrition: {
+                    ...state.nutrition,
+                    foodLog: {
+                        ...state.nutrition.foodLog,
+                        [action.payload.date]: action.payload.foods
+                    }
+                }
+            }
+        case 'UPDATE_DAILY_CALORIES':
+            return {
+                ...state,
+                profile: {
+                    ...state.profile,
+                    daily_calories: action.payload
+                }
+            }
+        case 'UPDATE_NUTRITION_TOTALS':
+            return {
+                ...state,
+                profile: {
+                    ...state.profile,
+                    daily_calories: action.payload.calories,
+                    macros: {
+                        ...state.profile.macros,
+                        protein: Math.max(state.profile.macros?.protein || 0, action.payload.protein)
+                    }
+                }
+            }
         default:
             return state
     }

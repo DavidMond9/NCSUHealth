@@ -21,7 +21,9 @@ function Profile() {
                 protein: 30,
                 carbs: 50,
                 fats: 20
-            }
+            },
+            daily_calories: 2000,
+            daily_water: 8
         }
     );
 
@@ -186,6 +188,26 @@ function Profile() {
                                 <option value="Super Active">Super Active</option>
                             </select>
                         </label>
+                        <label>
+                            Daily Calorie Target:
+                            <input
+                                type="number"
+                                name="daily_calories"
+                                value={profileData.daily_calories}
+                                onChange={handleChange}
+                                required
+                            />
+                        </label>
+                        <label>
+                            Daily Water Target (cups):
+                            <input
+                                type="number"
+                                name="daily_water"
+                                value={profileData.daily_water}
+                                onChange={handleChange}
+                                required
+                            />
+                        </label>
                         <button type="submit">Submit</button>
                     </form>
                 </div>
@@ -235,6 +257,14 @@ function Profile() {
                             <div className="info-item">
                                 <label>Activity Level</label>
                                 <span>{state.profile.activityLevel}</span>
+                            </div>
+                            <div className="info-item">
+                                <label>Daily Calories</label>
+                                <span>{state.profile.daily_calories}</span>
+                            </div>
+                            <div className="info-item">
+                                <label>Daily Water (cups)</label>
+                                <span>{state.profile.daily_water}</span>
                             </div>
                         </div>
                     </div>

@@ -74,7 +74,7 @@ def logout_view(request):
 def update_profile_view(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        username = data.get('username')  # Get username from request body
+        username = data.get('username')
 
         if not username:
             return JsonResponse({'error': 'Username is required'}, status=400)
@@ -95,7 +95,9 @@ def update_profile_view(request):
                     'protein': 30,
                     'carbs': 50,
                     'fats': 20
-                })
+                }),
+                set__daily_calories=data.get('daily_calories', 2000),
+                set__daily_water=data.get('daily_water', 8)
             )
             
             # Return updated user data
@@ -108,7 +110,9 @@ def update_profile_view(request):
                 'goal': user.goal,
                 'timeframe': user.timeframe,
                 'activityLevel': user.activity_level,
-                'macros': user.macros
+                'macros': user.macros,
+                'daily_calories': user.daily_calories,
+                'daily_water': user.daily_water
             }, status=200)
             
         return JsonResponse({'error': 'User not found'}, status=404)
@@ -126,7 +130,9 @@ def get_profile(request, username):
             'goal': user.goal,
             'timeframe': user.timeframe,
             'activityLevel': user.activity_level,
-            'macros': user.macros
+            'macros': user.macros,
+            'daily_calories': user.daily_calories,
+            'daily_water': user.daily_water
         })
     except User.DoesNotExist:
         return JsonResponse({'error': 'User not found'}, status=404)

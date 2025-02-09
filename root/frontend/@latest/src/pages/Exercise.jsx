@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useApp } from './AppContext';
 import './styles/Exercise.css';
 
 function Exercise() {
+    const { state } = useApp();
     const [exercises, setExercises] = useState({
         title: "Chest and Triceps",
         isCompleted: false,
@@ -20,13 +22,17 @@ function Exercise() {
         ]
     });
 
-    const [nutrition, setNutrition] = useState({
-        calories: { current: 0, target: 2000 },
-        protein: { current: 0, target: 150 },
-        water: { current: 0, target: 8 }
-    });
-
     const navigate = useNavigate();
+
+    // Calculate nutrition totals for today
+    const calculateNutritionTotals = () => {
+        const todaysFoods = state.nutrition.foodLog[new Date().toISOString().split('T')[0]] || [];
+        return todaysFoods.reduce((totals, food) => ({
+            calories: totals.calories + (food.calories || 0),
+            protein: totals.protein + (food.protein || 0),
+            water: totals.water + (food.water || 0)
+        }), { calories: 0, protein: 0, water: 0 });
+    };
 
     const handleCategoryClick = (category) => {
         navigate(`/exercise/${category.toLowerCase()}`);
@@ -39,15 +45,10 @@ function Exercise() {
                 updatedCategories[categoryIndex].setsCompleted += 1;
             }
 
-            // Check if all categories are completed
-            const allCompleted = updatedCategories.every(cat =>
-                cat.setsCompleted === cat.totalSets
-            );
-
             return {
                 ...prev,
                 categories: updatedCategories,
-                isCompleted: allCompleted
+                isCompleted: updatedCategories.every(cat => cat.setsCompleted === cat.totalSets)
             };
         });
     };
@@ -86,20 +87,36 @@ function Exercise() {
                 </div>
 
                 <div className="nutrition-tracker">
+                    <h3>Today's Nutrition Progress</h3>
                     <div className="progress-bar">
                         <label>Calories</label>
-                        <progress value={nutrition.calories.current} max={nutrition.calories.target} />
-                        <span>{nutrition.calories.current}/{nutrition.calories.target}</span>
+                        <progress 
+                            value={calculateNutritionTotals().calories} 
+                            max={state.profile?.daily_calories || 2000} 
+                        />
+                        <span>
+                            {calculateNutritionTotals().calories} / {state.profile?.daily_calories || 2000} kcal
+                        </span>
                     </div>
                     <div className="progress-bar">
-                        <label>Protein (g)</label>
-                        <progress value={nutrition.protein.current} max={nutrition.protein.target} />
-                        <span>{nutrition.protein.current}/{nutrition.protein.target}</span>
+                        <label>Protein</label>
+                        <progress 
+                            value={calculateNutritionTotals().protein} 
+                            max={state.profile?.macros?.protein || 150} 
+                        />
+                        <span>
+                            {calculateNutritionTotals().protein} / {state.profile?.macros?.protein || 150}g
+                        </span>
                     </div>
                     <div className="progress-bar">
-                        <label>Water (cups)</label>
-                        <progress value={nutrition.water.current} max={nutrition.water.target} />
-                        <span>{nutrition.water.current}/{nutrition.water.target}</span>
+                        <label>Water</label>
+                        <progress 
+                            value={calculateNutritionTotals().water} 
+                            max={state.profile?.daily_water || 8} 
+                        />
+                        <span>
+                            {calculateNutritionTotals().water} / {state.profile?.daily_water || 8} cups
+                        </span>
                     </div>
                 </div>
             </div>
