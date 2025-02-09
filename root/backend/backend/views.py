@@ -19,7 +19,7 @@ def register_view(request):
         print(f"username: {username}, email: {email}, password: {password}")
 
         if not username or not email or not password:
-            return JsonResponse({'error': 'All fields (username, email, password) are required'}, status=400)
+            return JsonResponse({f'error {username} {email} {password}': 'All fields (username, email, password)  are required'}, status=400)
 
         # Check if username already exists
         if User.objects(username=username).first():
