@@ -53,42 +53,63 @@ def login_view(request):
         # Check if user exists and password matches
         user = User.objects(username=username).first()
         if user and user.password == password:  # Note: In production, use proper password hashing
-            # request.session['username'] = user.username
-            return JsonResponse({'message': 'Login successful'})
+            # Return user data instead of setting session
+            return JsonResponse({
+                'message': 'Login successful',
+                'username': username,
+                'email': user.email
+            })
         return JsonResponse({'error': 'Invalid credentials'}, status=400)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 @csrf_exempt
 def logout_view(request):
     if request.method == 'POST':
-        logout(request)
-        return JsonResponse({'message': 'Logout successful'})
+        # Clear the session
+        request.session.flush()
+        return JsonResponse({'message': 'Logged out successfully'}, status=200)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 @csrf_exempt
 def update_profile_view(request):
     if request.method == 'POST':
-        # Retrieve the username from the session
-        username = request.session.get('username')
+        data = json.loads(request.body)
+        username = data.get('username')  # Get username from request body
 
         if not username:
-            return JsonResponse({'error': 'User not authenticated'}, status=401)
-
-        data = json.loads(request.body)
+            return JsonResponse({'error': 'Username is required'}, status=400)
 
         user = User.objects(username=username).first()
         if user:
-            user.update(
-                name=data.get('name'),
-                gender=data.get('gender'),
-                birth_date=data.get('birthDate'),
-                height=data.get('height'),
-                weight=data.get('weight'),
-                goal=data.get('goal'),
-                timeframe=data.get('timeframe'),
-                activity_level=data.get('activityLevel')
+            # Update user fields
+            user.modify(
+                set__name=data.get('name'),
+                set__gender=data.get('gender'),
+                set__birth_date=data.get('birthDate'),
+                set__height=data.get('height'),
+                set__weight=data.get('weight'),
+                set__goal=data.get('goal'),
+                set__timeframe=data.get('timeframe'),
+                set__activity_level=data.get('activityLevel'),
+                set__macros=data.get('macros', {
+                    'protein': 30,
+                    'carbs': 50,
+                    'fats': 20
+                })
             )
-            user.reload()
-            return JsonResponse(user.to_mongo().to_dict(), status=200)
+            
+            # Return updated user data
+            return JsonResponse({
+                'name': user.name,
+                'gender': user.gender,
+                'birthDate': user.birth_date,
+                'height': user.height,
+                'weight': user.weight,
+                'goal': user.goal,
+                'timeframe': user.timeframe,
+                'activityLevel': user.activity_level,
+                'macros': user.macros
+            }, status=200)
+            
         return JsonResponse({'error': 'User not found'}, status=404)
     return JsonResponse({'error': 'Invalid request method'}, status=405)

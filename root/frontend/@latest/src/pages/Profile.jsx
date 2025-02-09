@@ -50,17 +50,28 @@ function Profile() {
         e.preventDefault();
         if (isComplete) {
             try {
+                const username = localStorage.getItem('username');
+                if (!username) {
+                    alert('Please log in first');
+                    return;
+                }
+
                 const response = await fetch('http://127.0.0.1:8000/api/update-profile/', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(profileData),
+                    body: JSON.stringify({
+                        username,
+                        ...profileData
+                    }),
                 });
 
                 if (response.ok) {
                     const updatedProfile = await response.json();
                     dispatch({ type: 'SET_PROFILE', payload: updatedProfile });
+                    alert('Profile updated successfully!');
                 } else {
-                    alert('Failed to update profile. Please try again.');
+                    const error = await response.json();
+                    alert('Failed to update profile: ' + error.error);
                 }
             } catch (error) {
                 console.error('Error updating profile:', error);

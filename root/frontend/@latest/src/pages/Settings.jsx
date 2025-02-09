@@ -29,10 +29,34 @@ function Settings() {
         measurementUnit: 'metric'
     });
 
-    const handleProfileUpdate = (e) => {
+    const handleProfileUpdate = async (e) => {
         e.preventDefault();
-        // API call to update profile
-        console.log('Profile updated:', profileData);
+        try {
+            const username = localStorage.getItem('username');
+            if (!username) {
+                alert('Please log in first');
+                return;
+            }
+
+            const response = await fetch('http://127.0.0.1:8000/api/update-profile/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    username,
+                    ...profileData
+                }),
+            });
+
+            if (response.ok) {
+                alert('Profile updated successfully!');
+            } else {
+                const error = await response.json();
+                alert('Failed to update profile: ' + error.error);
+            }
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            alert('Network error occurred.');
+        }
     };
 
     const handleAccountUpdate = (e) => {
@@ -47,10 +71,23 @@ function Settings() {
         console.log('Preferences updated:', preferences);
     };
 
-    const handleLogout = () => {
-        // Clear local storage/cookies
-        // Redirect to login page
-        navigate('/Auth');
+    const handleLogout = async () => {
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/logout/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+            });
+
+            if (response.ok) {
+                // Redirect to the default page
+                navigate('/');
+            } else {
+                alert('Failed to log out. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error logging out:', error);
+            alert('Network error occurred.');
+        }
     };
 
     return (

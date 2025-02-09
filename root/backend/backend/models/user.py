@@ -14,6 +14,11 @@ class User(me.Document):
     goal = me.StringField()
     timeframe = me.StringField()
     activity_level = me.StringField()
+    macros = me.DictField(default={
+        'protein': 30,
+        'carbs': 50,
+        'fats': 20
+    })
     
     meta = {
         'collection': 'users'  # The name of your MongoDB collection

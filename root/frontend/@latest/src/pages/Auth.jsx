@@ -26,16 +26,19 @@ function Auth() {
                         password
                     })
                 });
+
                 const data = await response.json();
-                if (!response.ok) {
-                    alert(data.error); // Show error message to user
-                } else {
-                    console.log('Login success:', data.message);
+                
+                if (response.ok) {
+                    // Store username in localStorage
+                    localStorage.setItem('username', username);
+                    console.log('Login successful');
                     navigate('/Home');
+                } else {
+                    console.error('Login error:', data.error);
                 }
             } catch (error) {
                 console.error('Network error:', error);
-                alert('Network error occurred');
             }
         } else {
             // Handle registration logic here
