@@ -23,6 +23,8 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column; /* Ensures content stacks correctly */
 }
 
 .exercise-card:hover {
@@ -48,6 +50,15 @@
     color: var(--text-primary);
     line-height: 1.6;
     font-size: clamp(0.9rem, 1.2vw, 1rem);
+    flex-grow: 1; /* Allows content to expand without pushing buttons */
+}
+
+.sets-counter {
+    padding: clamp(0.5rem, 1.5vw, 0.75rem);
+    background-color: var(--light-gray);
+    text-align: center;
+    font-weight: bold;
+    font-size: clamp(0.9rem, 1.2vw, 1rem);
 }
 
 .set-button {
@@ -59,7 +70,9 @@
     cursor: pointer;
     transition: background-color 0.3s;
     font-size: clamp(0.9rem, 1.2vw, 1rem);
+    margin-top: auto; /* Ensures button sticks to the bottom */
 }
+
 
 .set-button:hover:not(:disabled) {
     background-color: var(--hover-red);
@@ -83,4 +96,4 @@
         margin: 0 auto;
         max-width: 400px;
     }
-} 
+}

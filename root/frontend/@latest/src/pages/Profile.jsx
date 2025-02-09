@@ -208,10 +208,11 @@ function Profile() {
                     <div className="chart-container">
                         <PieChart
                             data={macroData}
+                            radius={35}
                             lineWidth={40}
                             paddingAngle={2}
                             label={({ dataEntry }) => `${dataEntry.title} ${dataEntry.value}%`}
-                            labelStyle={{ fontSize: '5px' }}
+                            labelStyle={{ fontSize: '3px' }}
                         />
                     </div>
                     <div className="macro-legend">
