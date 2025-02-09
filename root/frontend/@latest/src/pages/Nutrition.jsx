@@ -143,6 +143,34 @@ function Nutrition() {
         }
     };
 
+    const handleAddWater = () => {
+        const today = new Date().toISOString().split('T')[0];
+        const waterItem = {
+            id: `water-${Date.now()}`,
+            name: 'Water',
+            calories: 0,
+            protein: 0,
+            water: 1, // 1 cup of water
+            meal: 'water',
+            timestamp: new Date().toISOString()
+        };
+
+        dispatch({
+            type: 'LOG_FOOD',
+            payload: {
+                date: today,
+                food: waterItem
+            }
+        });
+
+        // Update water intake in profile
+        const newTotals = calculateNutritionTotals();
+        dispatch({
+            type: 'UPDATE_WATER_INTAKE',
+            payload: newTotals.water + 1
+        });
+    };
+
     return (
         <div className="nutrition-page">
             <h1>Nutrition Tracker</h1>
@@ -188,6 +216,16 @@ function Nutrition() {
             </div>
 
             <div className="daily-summary">
+                <div className="water-tracking">
+                    <h3>Water Tracking</h3>
+                    <button 
+                        className="water-button"
+                        onClick={handleAddWater}
+                    >
+                        + 1 Cup
+                    </button>
+                </div>
+
                 <h2>Today's Log</h2>
                 <div className="logged-foods-container">
                     {state.nutrition.foodLog[new Date().toISOString().split('T')[0]]?.map((food, index) => (

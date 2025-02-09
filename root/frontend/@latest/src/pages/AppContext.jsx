@@ -93,6 +93,14 @@ function appReducer(state, action) {
                     }
                 }
             }
+        case 'UPDATE_WATER_INTAKE':
+            return {
+                ...state,
+                profile: {
+                    ...state.profile,
+                    daily_water: action.payload
+                }
+            }
         default:
             return state
     }

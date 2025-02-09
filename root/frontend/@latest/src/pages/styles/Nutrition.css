@@ -140,4 +140,69 @@
     .food-item button {
         width: 100%;
     }
-} 
+}
+
+.logged-foods-container {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 40px; /* Space for total calories */
+}
+
+.logged-food {
+    display: flex;
+    justify-content: space-between;
+    padding: clamp(0.5rem, 1.5vw, 0.75rem) 0;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: clamp(0.9rem, 1.5vw, 1rem);
+}
+
+.logged-food-info {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.food-number {
+    color: #cc0000;
+    font-weight: bold;
+    min-width: 25px;
+}
+
+.logged-food-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.remove-food-btn {
+    background: none;
+    border: none;
+    color: #cc0000;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+}
+
+.remove-food-btn:hover {
+    color: #990000;
+}
+
+.total-calories {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    font-weight: bold;
+    color: #cc0000;
+    font-size: 1.1rem;
+    padding: 0.5rem;
+    background: #fff;
+}
+
+.daily-summary {
+    position: relative;
+    padding-bottom: 3rem; /* Space for total calories */
+}
