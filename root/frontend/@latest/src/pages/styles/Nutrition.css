@@ -13,7 +13,7 @@
     width: 100%;
     padding: clamp(0.5rem, 1.5vw, 0.75rem);
     border-radius: 8px;
-    border: 1px solid var(--light-gray);
+    border: 1px solid #e0e0e0;
     font-size: clamp(14px, 1.5vw, 16px);
 }
 
@@ -24,15 +24,41 @@
 .food-search input {
     width: 100%;
     padding: clamp(0.75rem, 2vw, 1rem);
-    border: 1px solid var(--light-gray);
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
     font-size: clamp(14px, 1.5vw, 16px);
 }
 
 .search-results {
+    margin-top: 0.5rem;
+    max-height: 400px;
+    overflow-y: auto;
     background: white;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    scrollbar-width: thin;
+    scrollbar-color: #cc0000 #e0e0e0;
+}
+
+.search-results::-webkit-scrollbar {
+    width: 8px;
+}
+
+.search-results::-webkit-scrollbar-track {
+    background: #e0e0e0;
+    border-radius: 4px;
+}
+
+.search-results::-webkit-scrollbar-thumb {
+    background-color: #cc0000;
+    border-radius: 4px;
+}
+
+.loading {
+    text-align: center;
+    padding: 1rem;
+    color: #666;
+    font-style: italic;
 }
 
 .food-item {
@@ -40,11 +66,19 @@
     justify-content: space-between;
     align-items: center;
     padding: clamp(0.75rem, 2vw, 1rem);
-    border-bottom: 1px solid var(--light-gray);
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.food-item:last-child {
+    border-bottom: none;
+}
+
+.food-item:hover {
+    background-color: #f5f5f5;
 }
 
 .food-item button {
-    background-color: var(--wolfpack-red);
+    background-color: #cc0000;
     color: white;
     border: none;
     padding: clamp(0.5rem, 1.5vw, 0.75rem) clamp(1rem, 2vw, 1.5rem);
@@ -54,7 +88,12 @@
 }
 
 .food-item button:hover {
-    background-color: var(--hover-red);
+    background-color: #990000;
+}
+
+.food-info {
+    flex: 1;
+    padding-right: 1rem;
 }
 
 .food-info h3 {
@@ -65,7 +104,9 @@
 .food-info p {
     margin: 0.25rem 0 0;
     font-size: clamp(0.8rem, 1.2vw, 0.875rem);
-    color: var(--text-primary);
+    color: #666;
+    display: flex;
+    gap: 1rem;
 }
 
 .daily-summary {
@@ -76,7 +117,7 @@
 }
 
 .daily-summary h2 {
-    color: var(--wolfpack-red);
+    color: #cc0000;
     margin-bottom: clamp(1rem, 2vw, 1.5rem);
     font-size: clamp(1.2rem, 2vw, 1.5rem);
 }
@@ -85,7 +126,7 @@
     display: flex;
     justify-content: space-between;
     padding: clamp(0.5rem, 1.5vw, 0.75rem) 0;
-    border-bottom: 1px solid var(--light-gray);
+    border-bottom: 1px solid #e0e0e0;
     font-size: clamp(0.9rem, 1.5vw, 1rem);
 }
 
@@ -99,4 +140,126 @@
     .food-item button {
         width: 100%;
     }
-} 
+}
+
+.logged-foods-container {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 40px; /* Space for total calories */
+}
+
+.logged-food {
+    display: flex;
+    justify-content: space-between;
+    padding: clamp(0.5rem, 1.5vw, 0.75rem) 0;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: clamp(0.9rem, 1.5vw, 1rem);
+}
+
+.logged-food-info {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.food-number {
+    color: #cc0000;
+    font-weight: bold;
+    min-width: 25px;
+}
+
+.logged-food-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.remove-food-btn {
+    background: none;
+    border: none;
+    color: #cc0000;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+}
+
+.remove-food-btn:hover {
+    color: #990000;
+}
+
+.total-calories {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    font-weight: bold;
+    color: #cc0000;
+    font-size: 1.1rem;
+    padding: 0.75rem 1.25rem;
+    background: #fff;
+    z-index: 1;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.daily-summary {
+    position: relative;
+    padding-bottom: 5rem;
+}
+
+.nutrition-progress {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: #f9f9f9;
+    border-radius: 8px;
+}
+
+.progress-bar {
+    margin-bottom: 1rem;
+}
+
+.progress-bar:last-child {
+    margin-bottom: 0;
+}
+
+.progress-bar label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.progress-bar progress {
+    width: 100%;
+    height: 12px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: none;
+}
+
+.progress-bar progress::-webkit-progress-bar {
+    background-color: #e0e0e0;
+    border-radius: 6px;
+}
+
+.progress-bar progress::-webkit-progress-value {
+    background-color: #cc0000;
+    border-radius: 6px;
+}
+
+.progress-bar progress::-moz-progress-bar {
+    background-color: #cc0000;
+    border-radius: 6px;
+}
+
+.progress-bar span {
+    display: block;
+    text-align: right;
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 0.25rem;
+}

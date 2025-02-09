@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.hashers import make_password
 from .models.user import User
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -53,13 +54,128 @@ def login_view(request):
         # Check if user exists and password matches
         user = User.objects(username=username).first()
         if user and user.password == password:  # Note: In production, use proper password hashing
-            return JsonResponse({'message': 'Login successful'})
+            # Return user data instead of setting session
+            return JsonResponse({
+                'message': 'Login successful',
+                'username': username,
+                'email': user.email
+            })
         return JsonResponse({'error': 'Invalid credentials'}, status=400)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 @csrf_exempt
 def logout_view(request):
     if request.method == 'POST':
-        logout(request)
-        return JsonResponse({'message': 'Logout successful'})
+        # Clear the session
+        request.session.flush()
+        return JsonResponse({'message': 'Logged out successfully'}, status=200)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+@csrf_exempt
+def update_profile_view(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        username = data.get('username')
+
+        if not username:
+            return JsonResponse({'error': 'Username is required'}, status=400)
+
+        user = User.objects(username=username).first()
+        if user:
+            # Update user fields
+            user.modify(
+                set__name=data.get('name'),
+                set__gender=data.get('gender'),
+                set__birth_date=data.get('birthDate'),
+                set__height=data.get('height'),
+                set__weight=data.get('weight'),
+                set__goal=data.get('goal'),
+                set__timeframe=data.get('timeframe'),
+                set__activity_level=data.get('activityLevel'),
+                set__macros=data.get('macros', {
+                    'protein': 30,
+                    'carbs': 50,
+                    'fats': 20
+                }),
+                set__daily_calories=data.get('daily_calories', 2000),
+                set__daily_water=data.get('daily_water', 8)
+            )
+            
+            # Return updated user data
+            return JsonResponse({
+                'name': user.name,
+                'gender': user.gender,
+                'birthDate': user.birth_date,
+                'height': user.height,
+                'weight': user.weight,
+                'goal': user.goal,
+                'timeframe': user.timeframe,
+                'activityLevel': user.activity_level,
+                'macros': user.macros,
+                'daily_calories': user.daily_calories,
+                'daily_water': user.daily_water
+            }, status=200)
+            
+        return JsonResponse({'error': 'User not found'}, status=404)
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+def get_profile(request, username):
+    try:
+        user = User.objects.get(username=username)
+        return JsonResponse({
+            'name': user.name,
+            'gender': user.gender,
+            'birthDate': user.birth_date,
+            'height': user.height,
+            'weight': user.weight,
+            'goal': user.goal,
+            'timeframe': user.timeframe,
+            'activityLevel': user.activity_level,
+            'macros': user.macros,
+            'daily_calories': user.daily_calories,
+            'daily_water': user.daily_water
+        })
+    except User.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
+
+@csrf_exempt
+def update_account_view(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        username = data.get('username')
+        new_password = data.get('new_password')
+
+        if not username or not new_password:
+            return JsonResponse(
+                {'error': 'Username and new password are required'}, 
+                status=400
+            )
+
+        try:
+            # Get the user and update password
+            user = User.objects(username=username).first()
+            if not user:
+                return JsonResponse(
+                    {'error': 'User not found'}, 
+                    status=404
+                )
+
+            # Update the password
+            user.password = new_password  # MongoDB will handle this directly
+            user.save()
+
+            return JsonResponse(
+                {'message': 'Password updated successfully'}, 
+                status=200
+            )
+
+        except Exception as e:
+            return JsonResponse(
+                {'error': str(e)}, 
+                status=500
+            )
+
+    return JsonResponse(
+        {'error': 'Invalid request method'}, 
+        status=405
+    )

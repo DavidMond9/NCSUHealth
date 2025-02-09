@@ -21,7 +21,9 @@ function Profile() {
                 protein: 30,
                 carbs: 50,
                 fats: 20
-            }
+            },
+            daily_calories: 2000,
+            daily_water: 8
         }
     );
 
@@ -46,10 +48,37 @@ function Profile() {
     };
 
     // When the form is submitted, update the global state
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (isComplete) {
-            dispatch({ type: 'SET_PROFILE', payload: profileData });
+            try {
+                const username = localStorage.getItem('username');
+                if (!username) {
+                    alert('Please log in first');
+                    return;
+                }
+
+                const response = await fetch('http://127.0.0.1:8000/api/update-profile/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username,
+                        ...profileData
+                    }),
+                });
+
+                if (response.ok) {
+                    const updatedProfile = await response.json();
+                    dispatch({ type: 'SET_PROFILE', payload: updatedProfile });
+                    alert('Profile updated successfully!');
+                } else {
+                    const error = await response.json();
+                    alert('Failed to update profile: ' + error.error);
+                }
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                alert('Network error occurred.');
+            }
         } else {
             alert('Please fill out all fields.');
         }
@@ -159,6 +188,26 @@ function Profile() {
                                 <option value="Super Active">Super Active</option>
                             </select>
                         </label>
+                        <label>
+                            Daily Calorie Target:
+                            <input
+                                type="number"
+                                name="daily_calories"
+                                value={profileData.daily_calories}
+                                onChange={handleChange}
+                                required
+                            />
+                        </label>
+                        <label>
+                            Daily Water Target (cups):
+                            <input
+                                type="number"
+                                name="daily_water"
+                                value={profileData.daily_water}
+                                onChange={handleChange}
+                                required
+                            />
+                        </label>
                         <button type="submit">Submit</button>
                     </form>
                 </div>
@@ -208,6 +257,14 @@ function Profile() {
                             <div className="info-item">
                                 <label>Activity Level</label>
                                 <span>{state.profile.activityLevel}</span>
+                            </div>
+                            <div className="info-item">
+                                <label>Daily Calories</label>
+                                <span>{state.profile.daily_calories}</span>
+                            </div>
+                            <div className="info-item">
+                                <label>Daily Water (cups)</label>
+                                <span>{state.profile.daily_water}</span>
                             </div>
                         </div>
                     </div>

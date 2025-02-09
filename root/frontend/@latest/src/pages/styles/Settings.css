@@ -257,4 +257,15 @@
             margin: 15px 20px;
             width: calc(100% - 40px);
         }
+    }
+
+    /* Add to your existing CSS */
+    .disabled-input {
+        background-color: #f5f5f5;
+        color: #666;
+        cursor: not-allowed;
+    }
+
+    .disabled-input:hover {
+        border-color: var(--border-color);
     } 
