@@ -61,7 +61,7 @@ function Profile() {
             <div className="profile-section">
                 <div className="profile-container">
                     <h1>
-                        Hi {profileData.name || 'there'}, We need some info to get you started:
+                        Hi there, We need some info to get you started:
                     </h1>
                     <form onSubmit={handleSubmit} className="profile-setup-form">
                         <label>
@@ -86,16 +86,20 @@ function Profile() {
                         </label>
                         <label>
                             Gender:
-                            <input
-                                type="text"
+                            <select
                                 name="gender"
                                 value={profileData.gender}
                                 onChange={handleChange}
                                 required
-                            />
+                            >
+                                <option value="">Select...</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
                         </label>
                         <label>
-                            Height (cm):
+                            Height (in):
                             <input
                                 type="number"
                                 name="height"
@@ -105,7 +109,7 @@ function Profile() {
                             />
                         </label>
                         <label>
-                            Weight (kg):
+                            Weight (lb):
                             <input
                                 type="number"
                                 name="weight"
@@ -123,9 +127,9 @@ function Profile() {
                                 required
                             >
                                 <option value="">Select...</option>
-                                <option value="maintenance">Maintenance</option>
-                                <option value="gaining">Gaining</option>
-                                <option value="losing">Losing</option>
+                                <option value="Maintenance">Maintenance</option>
+                                <option value="Gaining">Gaining</option>
+                                <option value="Losing">Losing</option>
                             </select>
                         </label>
                         <label>
@@ -141,14 +145,19 @@ function Profile() {
                         </label>
                         <label>
                             Activity Level:
-                            <input
-                                type="text"
+                            <select
                                 name="activityLevel"
                                 value={profileData.activityLevel}
                                 onChange={handleChange}
-                                placeholder="e.g., Sedentary, Active"
                                 required
-                            />
+                            >
+                                <option value="">Select...</option>
+                                <option value="Sedentary">Sedentary</option>
+                                <option value="Lightly Active">Lightly Active</option>
+                                <option value="Moderately Active">Moderately Active</option>
+                                <option value="Very Active">Very Active</option>
+                                <option value="Super Active">Super Active</option>
+                            </select>
                         </label>
                         <button type="submit">Submit</button>
                     </form>
@@ -182,11 +191,11 @@ function Profile() {
                             </div>
                             <div className="info-item">
                                 <label>Height</label>
-                                <span>{state.profile.height} cm</span>
+                                <span>{state.profile.height} in</span>
                             </div>
                             <div className="info-item">
                                 <label>Weight</label>
-                                <span>{state.profile.weight} kg</span>
+                                <span>{state.profile.weight} lb</span>
                             </div>
                             <div className="info-item">
                                 <label>Goal</label>
