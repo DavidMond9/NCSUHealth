@@ -40,12 +40,19 @@ def register_view(request):
 @csrf_exempt
 def login_view(request):
     if request.method == 'POST':
+        # Debug print
+        print("Login endpoint called!")
+        
         data = json.loads(request.body)
         username = data.get('username')
         password = data.get('password')
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
+        
+        # Debug prints
+        print(f"username: {username}, password: {password}")
+
+        # Check if user exists and password matches
+        user = User.objects(username=username).first()
+        if user and user.password == password:  # Note: In production, use proper password hashing
             return JsonResponse({'message': 'Login successful'})
         return JsonResponse({'error': 'Invalid credentials'}, status=400)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
