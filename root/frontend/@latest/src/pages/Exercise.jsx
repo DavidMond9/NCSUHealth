@@ -53,53 +53,51 @@ function Exercise() {
     };
 
     return (
-        <div className="exercise-container">
+        <div className="exercise-page">
             <div className="exercise-sidebar">
-                <h3>Exercise Categories</h3>
-                <ul>
-                    <li onClick={() => handleCategoryClick('chest')}>Chest</li>
-                    <li onClick={() => handleCategoryClick('back')}>Back</li>
-                    <li onClick={() => handleCategoryClick('triceps')}>Triceps</li>
-                    <li onClick={() => handleCategoryClick('cardio')}>Cardio</li>
-                </ul>
-            </div>
-
-            <div className="exercise-main">
-                <div className="exercise-header">
-                    <h2>{exercises.title}</h2>
-                    <input
-                        type="checkbox"
-                        checked={exercises.isCompleted}
-                        readOnly
-                    />
+                    <h3>Exercise Categories</h3>
+                    <ul>
+                        <li onClick={() => handleCategoryClick('chest')}>Chest</li>
+                        <li onClick={() => handleCategoryClick('back')}>Back</li>
+                        <li onClick={() => handleCategoryClick('triceps')}>Triceps</li>
+                        <li onClick={() => handleCategoryClick('cardio')}>Cardio</li>
+                    </ul>
                 </div>
+            <div className="exercise-container">
+                
 
-                <div className="exercise-list">
-                    {exercises.categories.map((category, index) => (
-                        <div key={index} className="exercise-item">
-                            <span>{index + 1}) {category.totalSets} sets of {category.name}</span>
-                            <div className="sets-counter">
-                                {category.setsCompleted}/{category.totalSets}
+                <div className="exercise-main">
+                    <div className="exercise-header">
+                        <h2>{exercises.title}</h2>
+                    </div>
+
+                    <div className="exercise-list">
+                        {exercises.categories.map((category, index) => (
+                            <div key={index} className="exercise-item">
+                                <span>{index + 1}) {category.totalSets} sets of {category.name}</span>
+                                <div className="sets-counter">
+                                    {category.setsCompleted}/{category.totalSets}
+                                </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
 
-                <div className="nutrition-tracker">
-                    <div className="progress-bar">
-                        <label>Calories</label>
-                        <progress value={nutrition.calories.current} max={nutrition.calories.target} />
-                        <span>{nutrition.calories.current}/{nutrition.calories.target}</span>
-                    </div>
-                    <div className="progress-bar">
-                        <label>Protein (g)</label>
-                        <progress value={nutrition.protein.current} max={nutrition.protein.target} />
-                        <span>{nutrition.protein.current}/{nutrition.protein.target}</span>
-                    </div>
-                    <div className="progress-bar">
-                        <label>Water (cups)</label>
-                        <progress value={nutrition.water.current} max={nutrition.water.target} />
-                        <span>{nutrition.water.current}/{nutrition.water.target}</span>
+                    <div className="nutrition-tracker">
+                        <div className="progress-bar">
+                            <label>Calories</label>
+                            <progress value={nutrition.calories.current} max={nutrition.calories.target} />
+                            <span>{nutrition.calories.current}/{nutrition.calories.target}</span>
+                        </div>
+                        <div className="progress-bar">
+                            <label>Protein (g)</label>
+                            <progress value={nutrition.protein.current} max={nutrition.protein.target} />
+                            <span>{nutrition.protein.current}/{nutrition.protein.target}</span>
+                        </div>
+                        <div className="progress-bar">
+                            <label>Water (cups)</label>
+                            <progress value={nutrition.water.current} max={nutrition.water.target} />
+                            <span>{nutrition.water.current}/{nutrition.water.target}</span>
+                        </div>
                     </div>
                 </div>
             </div>
