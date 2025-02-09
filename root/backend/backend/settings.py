@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-=z5&x(9(3s*z6v+vih5p7k4ks3vexrg-4hg!n@8+)yxau#uph0'
+SECRET_KEY = 'django-insecure-5v%y5t!#=_1-$b44)ej4mz#fb%xto*hkyh-wol-44@t+ua+7%*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,17 +37,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'backend',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -73,12 +77,19 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'NCSUHEALTH',
+        'NAME': 'mydatabase',
+        'CLIENT': {
+            'host': 'mongodb+srv://james:123@exercise.kxkrx.mongodb.net/',
+        },
+        'ENFORCE_SCHEMA': False,
     }
 }
+
+
 
 
 # Password validation
@@ -121,3 +132,14 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# settings.py
+import mongoengine
+
+# USe james 123
+mongoengine.connect(
+    db='exercise',
+    host='mongodb+srv://james:123@exercise.kxkrx.mongodb.net/mydatabase?retryWrites=true&w=majority',
+    alias='default'
+)
+
