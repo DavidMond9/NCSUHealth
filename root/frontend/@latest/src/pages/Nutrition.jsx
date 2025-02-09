@@ -143,33 +143,33 @@ function Nutrition() {
         }
     };
 
-    const handleAddWater = () => {
+    const handleAddWater = (numCups = 1) => {
         const today = new Date().toISOString().split('T')[0];
         const waterItem = {
-            id: `water-${Date.now()}`,
-            name: 'Water',
-            calories: 0,
-            protein: 0,
-            water: 1, // 1 cup of water
-            meal: 'water',
-            timestamp: new Date().toISOString()
+          id: `water-${Date.now()}`,
+          name: 'Water',
+          calories: 0,
+          protein: 0,
+          water: numCups, // e.g. 1, 5, or 10 cups
+          meal: 'water',
+          timestamp: new Date().toISOString()
         };
-
+      
         dispatch({
-            type: 'LOG_FOOD',
-            payload: {
-                date: today,
-                food: waterItem
-            }
+          type: 'LOG_FOOD',
+          payload: {
+            date: today,
+            food: waterItem
+          }
         });
-
+      
         // Update water intake in profile
         const newTotals = calculateNutritionTotals();
         dispatch({
-            type: 'UPDATE_WATER_INTAKE',
-            payload: newTotals.water + 1
+          type: 'UPDATE_WATER_INTAKE',
+          payload: newTotals.water + numCups
         });
-    };
+      };
 
     return (
         <div className="nutrition-page">
@@ -218,12 +218,11 @@ function Nutrition() {
             <div className="daily-summary">
                 <div className="water-tracking">
                     <h3>Water Tracking</h3>
-                    <button 
-                        className="water-button"
-                        onClick={handleAddWater}
-                    >
-                        + 1 Cup
-                    </button>
+                    <div className="water-buttons">
+                        <button className="water-button" onClick={() => handleAddWater(1)}>+ 1 Cup</button>
+                        <button className="water-button" onClick={() => handleAddWater(5)}>+ 5 Cups</button>
+                        <button className="water-button" onClick={() => handleAddWater(10)}>+ 10 Cups</button>
+                    </div>
                 </div>
 
                 <h2>Today's Log</h2>
