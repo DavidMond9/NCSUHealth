@@ -8,9 +8,12 @@ function Auth() {
 
     // Initialize the navigate function
     const navigate = useNavigate();
-
+    // Add local state so you can read the input values
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     // Handle the form submit. This is just an example stub.
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
         if (isLoginView) {
@@ -21,7 +24,31 @@ function Auth() {
         } else {
             // Handle registration logic here
             console.log('Registering...');
-            // Optionally, redirect after registration or perform other actions
+            try {
+                console.log(username);
+                console.log(email);
+                console.log(password);
+
+                const response = await fetch('http://127.0.0.1:8000/api/register/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username,
+                        email,
+                        password
+                    })
+                });
+                const data = await response.json();
+                if (!response.ok) {
+                    console.error('Registration error:', data.error);
+                } else {
+                    console.log('Registration success:', data.message);
+                    // Optionally redirect to a new page or clear the form
+                    navigate('/Home');
+                }
+            } catch (error) {
+                console.error('Network error:', error);
+            }
         }
     };
 
@@ -58,19 +85,19 @@ function Auth() {
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
                             <label htmlFor="username">Username</label>
-                            <input id="username" type="text" required />
+                            <input id="username" type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
                         </div>
 
                         {!isLoginView && (
                             <div className="form-group">
                                 <label htmlFor="email">Email</label>
-                                <input id="email" type="email" required />
+                                <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                             </div>
                         )}
 
                         <div className="form-group">
                             <label htmlFor="password">Password</label>
-                            <input id="password" type="password" required />
+                            <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                         </div>
 
                         <button type="submit" className="auth-button">
@@ -80,8 +107,8 @@ function Auth() {
 
                     <p className="auth-toggle">
                         {isLoginView ? "Don't have an account?" : 'Already have an account?'}
-                        <button 
-                            type="button" 
+                        <button
+                            type="button"
                             onClick={() => setIsLoginView(!isLoginView)}
                             className="toggle-button"
                         >
