@@ -11,10 +11,10 @@ function ExerciseLayout() {
             <div className="exercise-sidebar">
                 <h3>Exercise Categories</h3>
                 <ul>
-                    <li onClick={() => navigate('/exercise/chest')}>Chest</li>
-                    <li onClick={() => navigate('/exercise/back')}>Back</li>
-                    <li onClick={() => navigate('/exercise/triceps')}>Triceps</li>
-                    <li onClick={() => navigate('/exercise/cardio')}>Cardio</li>
+                    <li onClick={() => navigate('/Home/exercise/chest')}>Chest</li>
+                    <li onClick={() => navigate('/Home/exercise/back')}>Back</li>
+                    <li onClick={() => navigate('/Home/exercise/triceps')}>Triceps</li>
+                    <li onClick={() => navigate('/Home/exercise/cardio')}>Cardio</li>
                 </ul>
             </div>
 

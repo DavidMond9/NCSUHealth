@@ -80,13 +80,23 @@ function ExerciseDetail() {
         return (
             <div className="exercise-detail">
                 <h2>No exercises found for {category}</h2>
-                <button onClick={() => navigate('/exercise')}>Back to Exercises</button>
+                <button onClick={() => navigate('/Home/exercise')}>Back to Exercises</button>
             </div>
         );
     }
 
     return (
         <div className="exercise-detail">
+            <div className="exercise-sidebar">
+                <h3>Exercise Categories</h3>
+                <ul>
+                    <li onClick={() => navigate('/Home/exercise/chest')}>Chest</li>
+                    <li onClick={() => navigate('/Home/exercise/back')}>Back</li>
+                    <li onClick={() => navigate('/Home/exercise/triceps')}>Triceps</li>
+                    <li onClick={() => navigate('/Home/exercise/cardio')}>Cardio</li>
+                </ul>
+            </div>
+
             <h2>{category.charAt(0).toUpperCase() + category.slice(1)} Exercises</h2>
             <div className="exercise-grid">
                 {exercises.map(exercise => (

@@ -29,7 +29,7 @@ function Exercise() {
     const navigate = useNavigate();
 
     const handleCategoryClick = (category) => {
-        navigate(`/exercise/${category.toLowerCase()}`);
+        navigate(`/Home/exercise/${category.toLowerCase()}`);
     };
 
     const updateSets = (categoryIndex) => {
