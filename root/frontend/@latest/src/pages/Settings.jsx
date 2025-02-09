@@ -1,33 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useApp } from './AppContext';
 import './styles/Settings.css';
 
 function Settings() {
     const navigate = useNavigate();
+    const { state, dispatch } = useApp();
     const [activeTab, setActiveTab] = useState('profile');
 
+    // Initialize state with empty values
     const [profileData, setProfileData] = useState({
-        age: 25,
-        weight: 70,
-        height: 175,
-        fitnessGoal: 'build-muscle',
-        activityLevel: 'moderate'
+        age: '',
+        weight: '',
+        height: '',
+        fitnessGoal: ''
     });
 
     const [accountData, setAccountData] = useState({
-        username: 'johndoe',
-        email: 'john@example.com',
-        currentPassword: '',
+        username: localStorage.getItem('username') || '',
+        email: localStorage.getItem('email') || '',
         newPassword: '',
         confirmPassword: ''
     });
 
-    const [preferences, setPreferences] = useState({
-        notifications: true,
-        darkMode: false,
-        language: 'english',
-        measurementUnit: 'metric'
-    });
+    // Load user data when component mounts
+    useEffect(() => {
+        if (state.profile) {
+            console.log('Profile data:', state.profile);
+            
+            // Calculate age if birthDate exists (note: using birthDate instead of birth_date)
+            let calculatedAge = '';
+            if (state.profile.birthDate) {  // Changed from birth_date to birthDate
+                const birthYear = new Date(state.profile.birthDate).getFullYear();
+                calculatedAge = new Date().getFullYear() - birthYear;
+            }
+
+            setProfileData({
+                age: calculatedAge ? `${calculatedAge}` : 'Not set',
+                weight: state.profile.weight || 70,
+                height: state.profile.height || 175,
+                fitnessGoal: state.profile.goal || 'build-muscle'
+            });
+        }
+    }, [state.profile]);
 
     const handleProfileUpdate = async (e) => {
         e.preventDefault();
@@ -38,16 +53,37 @@ function Settings() {
                 return;
             }
 
+            // Preserve all existing profile data and only update the changed fields
+            const updatedProfile = {
+                ...state.profile,  // Keep all existing profile data
+                username,
+                weight: profileData.weight,
+                height: profileData.height,
+                goal: profileData.fitnessGoal,
+                // Explicitly preserve these fields
+                name: state.profile.name,
+                gender: state.profile.gender,
+                birth_date: state.profile.birth_date,
+                activity_level: state.profile.activity_level,
+                timeframe: state.profile.timeframe,
+                macros: state.profile.macros,
+                daily_calories: state.profile.daily_calories,
+                daily_water: state.profile.daily_water
+            };
+
             const response = await fetch('http://127.0.0.1:8000/api/update-profile/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    username,
-                    ...profileData
-                }),
+                body: JSON.stringify(updatedProfile),
             });
 
             if (response.ok) {
+                // Update the global state with the complete profile data
+                dispatch({
+                    type: 'UPDATE_PROFILE',
+                    payload: updatedProfile
+                });
+                
                 alert('Profile updated successfully!');
             } else {
                 const error = await response.json();
@@ -59,16 +95,54 @@ function Settings() {
         }
     };
 
-    const handleAccountUpdate = (e) => {
+    const handleAccountUpdate = async (e) => {
         e.preventDefault();
-        // API call to update account
-        console.log('Account updated:', accountData);
-    };
+        
+        // Get username from localStorage
+        const username = localStorage.getItem('username');
+        
+        if (!username) {
+            alert('Please log in first');
+            return;
+        }
 
-    const handlePreferencesUpdate = (e) => {
-        e.preventDefault();
-        // API call to update preferences
-        console.log('Preferences updated:', preferences);
+        // Only handle password updates
+        if (!accountData.newPassword && !accountData.confirmPassword) {
+            alert('Please enter a new password to update.');
+            return;
+        }
+
+        if (accountData.newPassword !== accountData.confirmPassword) {
+            alert('New passwords do not match!');
+            return;
+        }
+
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/update-account/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    username: username,  // Use username from localStorage
+                    new_password: accountData.newPassword
+                }),
+            });
+
+            if (response.ok) {
+                alert('Password updated successfully!');
+                // Clear password fields after successful update
+                setAccountData(prev => ({
+                    ...prev,
+                    newPassword: '',
+                    confirmPassword: ''
+                }));
+            } else {
+                const error = await response.json();
+                alert('Failed to update password: ' + error.error);
+            }
+        } catch (error) {
+            console.error('Error updating account:', error);
+            alert('Network error occurred.');
+        }
     };
 
     const handleLogout = async () => {
@@ -79,7 +153,6 @@ function Settings() {
             });
 
             if (response.ok) {
-                // Redirect to the default page
                 navigate('/');
             } else {
                 alert('Failed to log out. Please try again.');
@@ -120,13 +193,6 @@ function Settings() {
                             <i className="fas fa-lock"></i>
                             <span>Account Settings</span>
                         </li>
-                        <li
-                            className={`sidebar-item ${activeTab === 'preferences' ? 'active' : ''}`}
-                            onClick={() => setActiveTab('preferences')}
-                        >
-                            <i className="fas fa-cog"></i>
-                            <span>Preferences</span>
-                        </li>
                     </ul>
                     <button className="logout-button" onClick={handleLogout}>
                         <i className="fas fa-sign-out-alt"></i>
@@ -146,32 +212,42 @@ function Settings() {
                                     <div className="form-group">
                                         <label>Age</label>
                                         <input
-                                            type="number"
-                                            value={profileData.age}
-                                            onChange={(e) => setProfileData({ ...profileData, age: e.target.value })}
+                                            type="text"
+                                            value={profileData.age ? `${profileData.age} years` : ''}
+                                            disabled
+                                            className="disabled-input"
                                         />
                                     </div>
                                     <div className="form-group">
-                                        <label>Weight (kg)</label>
+                                        <label>Weight (lb)</label>
                                         <input
                                             type="number"
-                                            value={profileData.weight}
-                                            onChange={(e) => setProfileData({ ...profileData, weight: e.target.value })}
+                                            value={profileData.weight || ''}
+                                            onChange={(e) => setProfileData(prev => ({
+                                                ...prev,
+                                                weight: e.target.value
+                                            }))}
                                         />
                                     </div>
                                     <div className="form-group">
-                                        <label>Height (cm)</label>
+                                        <label>Height (in)</label>
                                         <input
                                             type="number"
-                                            value={profileData.height}
-                                            onChange={(e) => setProfileData({ ...profileData, height: e.target.value })}
+                                            value={profileData.height || ''}
+                                            onChange={(e) => setProfileData(prev => ({
+                                                ...prev,
+                                                height: e.target.value
+                                            }))}
                                         />
                                     </div>
                                     <div className="form-group">
                                         <label>Fitness Goal</label>
                                         <select
                                             value={profileData.fitnessGoal}
-                                            onChange={(e) => setProfileData({ ...profileData, fitnessGoal: e.target.value })}
+                                            onChange={(e) => setProfileData(prev => ({
+                                                ...prev,
+                                                fitnessGoal: e.target.value
+                                            }))}
                                         >
                                             <option value="build-muscle">Build Muscle</option>
                                             <option value="lose-weight">Lose Weight</option>
@@ -187,7 +263,7 @@ function Settings() {
                             <div className="settings-section">
                                 <div className="section-header">
                                     <h3>Account Settings</h3>
-                                    <p>Manage your account credentials and security</p>
+                                    <p>Update your password</p>
                                 </div>
                                 <form onSubmit={handleAccountUpdate}>
                                     <div className="form-group">
@@ -195,7 +271,9 @@ function Settings() {
                                         <input
                                             type="text"
                                             value={accountData.username}
-                                            onChange={(e) => setAccountData({ ...accountData, username: e.target.value })}
+                                            disabled
+                                            className="disabled-input"
+                                            readOnly
                                         />
                                     </div>
                                     <div className="form-group">
@@ -203,15 +281,9 @@ function Settings() {
                                         <input
                                             type="email"
                                             value={accountData.email}
-                                            onChange={(e) => setAccountData({ ...accountData, email: e.target.value })}
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Current Password</label>
-                                        <input
-                                            type="password"
-                                            value={accountData.currentPassword}
-                                            onChange={(e) => setAccountData({ ...accountData, currentPassword: e.target.value })}
+                                            disabled
+                                            className="disabled-input"
+                                            readOnly
                                         />
                                     </div>
                                     <div className="form-group">
@@ -219,71 +291,26 @@ function Settings() {
                                         <input
                                             type="password"
                                             value={accountData.newPassword}
-                                            onChange={(e) => setAccountData({ ...accountData, newPassword: e.target.value })}
+                                            onChange={(e) => setAccountData(prev => ({
+                                                ...prev,
+                                                newPassword: e.target.value
+                                            }))}
+                                            placeholder="Enter new password"
                                         />
                                     </div>
                                     <div className="form-group">
-                                        <label>Confirm Password</label>
+                                        <label>Confirm New Password</label>
                                         <input
                                             type="password"
                                             value={accountData.confirmPassword}
-                                            onChange={(e) => setAccountData({ ...accountData, confirmPassword: e.target.value })}
+                                            onChange={(e) => setAccountData(prev => ({
+                                                ...prev,
+                                                confirmPassword: e.target.value
+                                            }))}
+                                            placeholder="Confirm new password"
                                         />
                                     </div>
-                                    <button type="submit">Update Account</button>
-                                </form>
-                            </div>
-                        )}
-
-                        {activeTab === 'preferences' && (
-                            <div className="settings-section">
-                                <div className="section-header">
-                                    <h3>Preferences</h3>
-                                    <p>Customize your app experience</p>
-                                </div>
-                                <form onSubmit={handlePreferencesUpdate}>
-                                    <div className="form-group">
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                checked={preferences.notifications}
-                                                onChange={(e) => setPreferences({ ...preferences, notifications: e.target.checked })}
-                                            />
-                                            Enable Notifications
-                                        </label>
-                                    </div>
-                                    <div className="form-group">
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                checked={preferences.darkMode}
-                                                onChange={(e) => setPreferences({ ...preferences, darkMode: e.target.checked })}
-                                            />
-                                            Dark Mode
-                                        </label>
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Language</label>
-                                        <select
-                                            value={preferences.language}
-                                            onChange={(e) => setPreferences({ ...preferences, language: e.target.value })}
-                                        >
-                                            <option value="english">English</option>
-                                            <option value="spanish">Spanish</option>
-                                            <option value="french">French</option>
-                                        </select>
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Measurement Unit</label>
-                                        <select
-                                            value={preferences.measurementUnit}
-                                            onChange={(e) => setPreferences({ ...preferences, measurementUnit: e.target.value })}
-                                        >
-                                            <option value="metric">Metric (kg/cm)</option>
-                                            <option value="imperial">Imperial (lb/in)</option>
-                                        </select>
-                                    </div>
-                                    <button type="submit">Save Preferences</button>
+                                    <button type="submit">Update Password</button>
                                 </form>
                             </div>
                         )}

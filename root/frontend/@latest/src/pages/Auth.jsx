@@ -14,6 +14,7 @@ function Auth() {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     // Handle the form submit. This is just an example stub.
     const handleSubmit = async (event) => {
@@ -31,27 +32,29 @@ function Auth() {
                 });
 
                 const data = await response.json();
-                
+
                 if (response.ok) {
-                    // Store username in localStorage
-                    localStorage.setItem('username', username);
+                    localStorage.setItem('username', data.username);
+                    localStorage.setItem('email', data.email);
                     
-                    // Fetch user profile data
-                    const profileResponse = await fetch(`http://127.0.0.1:8000/api/get-profile/${username}/`);
+                    const profileResponse = await fetch(`http://127.0.0.1:8000/api/get-profile/${data.username}/`);
                     const profileData = await profileResponse.json();
                     
                     if (profileResponse.ok) {
-                        // Update global state with profile data
                         dispatch({ type: 'SET_PROFILE', payload: profileData });
                     }
                     
                     console.log('Login successful');
                     navigate('/Home/profile');
                 } else {
-                    console.error('Login error:', data.error);
+                    // Show popup for incorrect password
+                    alert('Incorrect username or password. Please try again.');
+                    // Clear password field but keep username
+                    setPassword('');
                 }
             } catch (error) {
                 console.error('Network error:', error);
+                alert('Network error occurred. Please try again later.');
             }
         } else {
             // Handle registration logic here
@@ -71,8 +74,9 @@ function Auth() {
                     console.error('Registration error:', data.error);
                 } else {
                     console.log('Registration success:', data.message);
-                    // Store username in localStorage
+                    // Store both username and email in localStorage for new registrations too
                     localStorage.setItem('username', username);
+                    localStorage.setItem('email', email);
                     // Explicitly set profile to null for new registrations
                     dispatch({ type: 'SET_PROFILE', payload: null });
                     // Navigate to profile setup page

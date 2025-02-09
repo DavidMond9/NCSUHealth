@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.hashers import make_password
 from .models.user import User
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -136,3 +137,45 @@ def get_profile(request, username):
         })
     except User.DoesNotExist:
         return JsonResponse({'error': 'User not found'}, status=404)
+
+@csrf_exempt
+def update_account_view(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        username = data.get('username')
+        new_password = data.get('new_password')
+
+        if not username or not new_password:
+            return JsonResponse(
+                {'error': 'Username and new password are required'}, 
+                status=400
+            )
+
+        try:
+            # Get the user and update password
+            user = User.objects(username=username).first()
+            if not user:
+                return JsonResponse(
+                    {'error': 'User not found'}, 
+                    status=404
+                )
+
+            # Update the password
+            user.password = new_password  # MongoDB will handle this directly
+            user.save()
+
+            return JsonResponse(
+                {'message': 'Password updated successfully'}, 
+                status=200
+            )
+
+        except Exception as e:
+            return JsonResponse(
+                {'error': str(e)}, 
+                status=500
+            )
+
+    return JsonResponse(
+        {'error': 'Invalid request method'}, 
+        status=405
+    )

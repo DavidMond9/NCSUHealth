@@ -101,6 +101,11 @@ function appReducer(state, action) {
                     daily_water: action.payload
                 }
             }
+        case 'UPDATE_PROFILE':
+            return {
+                ...state,
+                profile: action.payload
+            }
         default:
             return state
     }
