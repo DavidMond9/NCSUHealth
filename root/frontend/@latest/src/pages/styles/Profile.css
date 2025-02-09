@@ -50,15 +50,61 @@ html, body {
 
 /* Sub-cards, if you like.  You can remove box-shadow if 
    you don't want multiple 'cards within cards.' */
-.profile-card,
-.macro-chart {
+   .profile-card,
+   .macro-chart {
+       width: 100%;
+       margin-bottom: 2rem;
+       background-color: white;
+       border-radius: 12px;
+       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+       padding: 1.5rem;
+   }
+
+/* Keep Pie Chart centered */
+.chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    margin-bottom: 2rem;
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    padding: 1.5rem;
+    margin-bottom: 1rem; /* Space between Pie Chart and labels */
 }
+
+/* Center the macro legend under the Pie Chart */
+.macro-legend {
+    text-align: center; /* Ensures text and items are centered */
+    margin-top: 1rem;
+}
+
+/* Ensure legend items are aligned properly without disrupting original layout */
+.legend-item {
+    display: inline-block; /* Keeps elements in one row while maintaining spacing */
+    margin: 0 10px; /* Adjust spacing between items */
+    font-size: 1rem;
+}
+
+/* Keep the color dots properly aligned */
+.color-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+}
+
+/* Responsive behavior (stack items on smaller screens) */
+@media (max-width: 640px) {
+    .macro-legend {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .legend-item {
+        margin-bottom: 8px;
+    }
+}
+
+
 
 /* ...the rest of your existing .info-grid, .info-item, .chart styles... */
 .info-grid {
