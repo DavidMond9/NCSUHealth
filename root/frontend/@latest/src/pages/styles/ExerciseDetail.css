@@ -104,22 +104,56 @@
 /* Parent container for layout */
 .exercise-page {
     display: flex;
-    gap: 20px;
-    padding: 20px;
-    height: 100vh; /* Full viewport height */
-    overflow: hidden; /* Prevent overflow issues */
+    min-height: 100vh;
+    background-color: #f7f9fc;
 }
 
 /* Sidebar Styling */
 .exercise-sidebar {
-    width: 220px;
-    background-color: #f8f8f8;
-    padding: 15px;
+    width: 250px;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.exercise-sidebar h3 {
+    color: var(--wolfpack-red);
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+.exercise-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.exercise-sidebar li {
+    padding: 12px 15px;
+    margin: 5px 0;
+    cursor: pointer;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    flex-shrink: 0;
-    height: 100%;
-    overflow-y: auto; /* Sidebar scroll if content overflows */
+    transition: all 0.3s ease;
+}
+
+.exercise-sidebar li:hover {
+    background-color: #f0f0f0;
+    color: var(--wolfpack-red);
+}
+
+.exercise-sidebar li.active {
+    background-color: var(--wolfpack-red);
+    color: white;
+}
+
+.exercise-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
 }
 
 /* Exercise Content Container */
@@ -137,11 +171,9 @@
 /* Scrollable Grid */
 .exercise-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* 4 items per row */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
-    overflow-y: auto; /* Enable vertical scrolling */
-    padding: 10px;
-    height: calc(100vh - 100px); /* Adjust height based on header size */
+    padding: 20px 0;
 }
 
 /* Fixed-size Exercise Cards */
@@ -184,4 +216,30 @@
 .set-button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .exercise-page {
+        flex-direction: column;
+    }
+
+    .exercise-sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+        padding: 10px;
+    }
+
+    .exercise-sidebar ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .exercise-sidebar li {
+        flex: 1 1 auto;
+        text-align: center;
+        padding: 8px 12px;
+    }
 }

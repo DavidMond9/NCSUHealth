@@ -59,40 +59,194 @@ function Exercise() {
     };
 
     const updateSets = (categoryIndex) => {
+        console.log('Before update - category sets:', exercises.categories[categoryIndex].setsCompleted); // Debug log
+
         setExercises(prev => {
-            const updatedCategories = [...prev.categories];
-            if (updatedCategories[categoryIndex].setsCompleted < updatedCategories[categoryIndex].totalSets) {
-                updatedCategories[categoryIndex].setsCompleted += 1;
+            // Only proceed if we haven't reached the total sets
+            if (prev.categories[categoryIndex].setsCompleted >= prev.categories[categoryIndex].totalSets) {
+                return prev; // Return unchanged state if we've reached the limit
             }
 
-            const newState = {
+            // Create new categories array with the update
+            const updatedCategories = prev.categories.map((cat, idx) => 
+                idx === categoryIndex 
+                    ? { ...cat, setsCompleted: cat.setsCompleted + 1 }
+                    : cat
+            );
+
+            // Calculate total sets completed
+            const totalSetsCompleted = updatedCategories.reduce(
+                (total, cat) => total + cat.setsCompleted, 
+                0
+            );
+
+            // Update exercise progress in the same update
+            setExerciseProgress({
+                setsCompleted: totalSetsCompleted,
+                totalSets: 18
+            });
+
+            console.log('After update - total sets:', totalSetsCompleted); // Debug log
+
+            return {
                 ...prev,
                 categories: updatedCategories,
                 isCompleted: updatedCategories.every(cat => cat.setsCompleted === cat.totalSets)
             };
-
-            // Update exercise progress separately
-            const totalSetsCompleted = updatedCategories.reduce((total, cat) => total + cat.setsCompleted, 0);
-            setExerciseProgress({
-                setsCompleted: totalSetsCompleted,
-                totalSets: exerciseProgress.totalSets
-            });
-
-            return newState;
         });
+    };
+
+    const exerciseCategories = {
+        chest: [
+            {
+                name: "Bench Press",
+                description: "Fundamental compound exercise for chest development. Lie on a flat bench and press the barbell up and down with controlled movement.",
+            },
+            {
+                name: "Incline Dumbbell Press",
+                description: "Targets upper chest muscles. Perform on an incline bench with dumbbells for better range of motion.",
+            },
+            {
+                name: "Pec-Flys",
+                description: "Isolation exercise for chest. Use cables or dumbbells to perform a flying motion that stretches and contracts chest muscles.",
+            },
+            {
+                name: "Push-ups",
+                description: "Bodyweight exercise that works chest, shoulders, and triceps. Great for building strength and endurance.",
+            },
+            {
+                name: "Dips",
+                description: "Compound exercise targeting lower chest, triceps, and shoulders. Perform on parallel bars.",
+            },
+            {
+                name: "Decline Bench",
+                description: "Targets lower chest muscles. Perform on a decline bench for varied angle training.",
+            }
+        ],
+        back: [
+            {
+                name: "Bent Over Rows",
+                description: "Compound exercise for back thickness. Bend at hips and pull weight towards lower chest.",
+            },
+            {
+                name: "Lat Pulldowns",
+                description: "Machine exercise targeting latissimus dorsi. Pull bar down to upper chest with wide grip.",
+            },
+            {
+                name: "Pull-Ups",
+                description: "Bodyweight exercise for back width. Grip bar overhead and pull yourself up.",
+            },
+            {
+                name: "Lat Pullovers",
+                description: "Isolation exercise for lats. Lie on bench and pull weight in arc motion over head.",
+            }
+        ],
+        arms: [
+            {
+                name: "Bicep Curls",
+                description: "Classic bicep exercise. Curl weight up with palms facing up for bicep peak.",
+            },
+            {
+                name: "Hammer Curls",
+                description: "Targets outer bicep and forearms. Curl with palms facing each other.",
+            },
+            {
+                name: "Tricep Push Downs",
+                description: "Cable exercise for triceps. Push bar down with elbows at sides.",
+            },
+            {
+                name: "Skull Crushers",
+                description: "Lying tricep extension. Lower weight to forehead and extend arms.",
+            }
+        ],
+        shoulders: [
+            {
+                name: "Shoulder Press",
+                description: "Compound movement for deltoids. Press weight overhead from shoulder level.",
+            },
+            {
+                name: "Rear Delt Flys",
+                description: "Targets posterior deltoids. Bend forward and raise weights out to sides.",
+            },
+            {
+                name: "Lateral Raises",
+                description: "Isolation for middle deltoids. Raise weights to sides to shoulder level.",
+            },
+            {
+                name: "Face Pulls",
+                description: "Targets rear deltoids and upper back. Pull rope to face level.",
+            }
+        ],
+        legs: [
+            {
+                name: "Squats",
+                description: "King of leg exercises. Bend knees and hips to lower body, then stand.",
+            },
+            {
+                name: "Leg Press",
+                description: "Machine compound movement. Press weight away with legs while seated.",
+            },
+            {
+                name: "Hamstring Curls",
+                description: "Isolation for hamstrings. Curl weight with legs while lying down.",
+            },
+            {
+                name: "Calf Raises",
+                description: "Targets calves. Rise up on toes with weight on shoulders.",
+            },
+            {
+                name: "Leg Extensions",
+                description: "Isolation for quadriceps. Extend legs from seated position.",
+            }
+        ],
+        abs: [
+            {
+                name: "Crunches",
+                description: "Basic ab exercise. Curl upper body towards knees while lying down.",
+            },
+            {
+                name: "Planks",
+                description: "Core stability exercise. Hold position with straight body.",
+            }
+        ],
+        cardio: [
+            {
+                name: "Running",
+                description: "Basic cardio exercise. Run at steady pace or intervals.",
+            },
+            {
+                name: "Biking",
+                description: "Low-impact cardio. Cycle on machine or outdoors.",
+            },
+            {
+                name: "Swimming",
+                description: "Full-body cardio. Swim laps using various strokes.",
+            },
+            {
+                name: "Jump Rope",
+                description: "High-intensity cardio. Skip rope for intervals.",
+            },
+            {
+                name: "Basketball",
+                description: "Sport-based cardio. Play full or half court.",
+            }
+        ]
     };
 
     return (
         <div className="exercise-page">
             <div className="exercise-sidebar">
-                    <h3>Exercise Categories</h3>
-                    <ul>
-                        <li onClick={() => handleCategoryClick('chest')}>Chest</li>
-                        <li onClick={() => handleCategoryClick('back')}>Back</li>
-                        <li onClick={() => handleCategoryClick('triceps')}>Triceps</li>
-                        <li onClick={() => handleCategoryClick('cardio')}>Cardio</li>
-                    </ul>
-                </div>
+                <h3>Exercise Categories</h3>
+                <ul>
+                    <li onClick={() => handleCategoryClick('chest')}>Chest</li>
+                    <li onClick={() => handleCategoryClick('back')}>Back</li>
+                    <li onClick={() => handleCategoryClick('arms')}>Arms</li>
+                    <li onClick={() => handleCategoryClick('shoulders')}>Shoulders</li>
+                    <li onClick={() => handleCategoryClick('legs')}>Legs</li>
+                    <li onClick={() => handleCategoryClick('abs')}>Abs</li>
+                    <li onClick={() => handleCategoryClick('cardio')}>Cardio</li>
+                </ul>
+            </div>
             <div className="exercise-container">
                 
 
