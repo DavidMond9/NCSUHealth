@@ -97,3 +97,91 @@
         max-width: 400px;
     }
 }
+
+
+
+
+/* Parent container for layout */
+.exercise-page {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    height: 100vh; /* Full viewport height */
+    overflow: hidden; /* Prevent overflow issues */
+}
+
+/* Sidebar Styling */
+.exercise-sidebar {
+    width: 220px;
+    background-color: #f8f8f8;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+    height: 100%;
+    overflow-y: auto; /* Sidebar scroll if content overflows */
+}
+
+/* Exercise Content Container */
+.exercise-container {
+    flex: 1;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent content overflow */
+}
+
+/* Scrollable Grid */
+.exercise-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* 4 items per row */
+    gap: 20px;
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding: 10px;
+    height: calc(100vh - 100px); /* Adjust height based on header size */
+}
+
+/* Fixed-size Exercise Cards */
+.exercise-card {
+    background-color: #fff;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    height: 300px; /* Fixed height */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribute content evenly */
+}
+
+.exercise-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+/* Buttons */
+.set-button {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.set-button:hover {
+    background-color: #0056b3;
+}
+
+.set-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}

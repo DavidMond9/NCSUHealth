@@ -12,14 +12,15 @@
 
     .settings-content {
         flex: 1;
-        max-height: calc(100vh - 160px); /* Adjusted height to ensure visibility */
-        overflow-y: auto; /* Enables scrolling when content exceeds container */
         padding-bottom: 70px; /* Prevents content from touching the bottom */
+        overflow-y: visible; /* Remove scrolling */
+        max-height: none; /* Allow content to expand naturally */
     }
-
+    
     .settings-page {
         min-height: 100vh;
         background-color: var(--light-gray);
+        overflow-y: auto; /* Enable full-page scrolling */
     }
 
     .settings-hero {
@@ -120,6 +121,8 @@
         justify-content: center;
         gap: 10px;
         font-size: 1rem;
+        font-weight: 500; /* Ensure consistent font weight */
+        text-align: center; /* Center text alignment */
     }
 
     .logout-button:hover {
