@@ -263,3 +263,39 @@
     color: #666;
     margin-top: 0.25rem;
 }
+
+/* Make the Water Tracking heading match the color and size of "Today's Log" */
+.water-tracking h3 {
+    color: #cc0000;
+    margin-bottom: clamp(1rem, 2vw, 1.5rem);
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+  }
+  
+  /* Style the +1 Cup button to match your red button styles */
+  .water-tracking .water-button {
+    background-color: #cc0000;
+    margin-bottom: clamp(1rem, 2vw, 1.5rem);
+    color: white;
+    border: none;
+    padding: clamp(0.5rem, 1.5vw, 0.75rem) clamp(1rem, 2vw, 1.5rem);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .water-tracking .water-button:hover {
+    background-color: #990000;
+  }
+
+  .water-tracking h3,
+  .daily-summary h2 {
+  text-align: center;
+}
+
+.water-tracking .water-buttons {
+    display: flex;
+    justify-content: center; /* centers all buttons horizontally */
+    gap: 1rem;              /* space between buttons */
+    margin-bottom: 1rem;    /* some spacing below */
+  }
+  
