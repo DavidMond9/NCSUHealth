@@ -113,3 +113,20 @@ def update_profile_view(request):
             
         return JsonResponse({'error': 'User not found'}, status=404)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+def get_profile(request, username):
+    try:
+        user = User.objects.get(username=username)
+        return JsonResponse({
+            'name': user.name,
+            'gender': user.gender,
+            'birthDate': user.birth_date,
+            'height': user.height,
+            'weight': user.weight,
+            'goal': user.goal,
+            'timeframe': user.timeframe,
+            'activityLevel': user.activity_level,
+            'macros': user.macros
+        })
+    except User.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)

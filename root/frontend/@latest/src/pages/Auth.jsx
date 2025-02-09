@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles/Auth.css';
+import { useApp } from './AppContext';
 
 function Auth() {
+    const { dispatch } = useApp();
     // State to track whether we're showing the login form or the register form
     const [isLoginView, setIsLoginView] = useState(true);
 
@@ -12,6 +14,7 @@ function Auth() {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
     // Handle the form submit. This is just an example stub.
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -32,8 +35,18 @@ function Auth() {
                 if (response.ok) {
                     // Store username in localStorage
                     localStorage.setItem('username', username);
+                    
+                    // Fetch user profile data
+                    const profileResponse = await fetch(`http://127.0.0.1:8000/api/get-profile/${username}/`);
+                    const profileData = await profileResponse.json();
+                    
+                    if (profileResponse.ok) {
+                        // Update global state with profile data
+                        dispatch({ type: 'SET_PROFILE', payload: profileData });
+                    }
+                    
                     console.log('Login successful');
-                    navigate('/Home');
+                    navigate('/Home/profile');
                 } else {
                     console.error('Login error:', data.error);
                 }
@@ -44,10 +57,6 @@ function Auth() {
             // Handle registration logic here
             console.log('Registering...');
             try {
-                console.log(username);
-                console.log(email);
-                console.log(password);
-
                 const response = await fetch('http://127.0.0.1:8000/api/register/', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -62,8 +71,12 @@ function Auth() {
                     console.error('Registration error:', data.error);
                 } else {
                     console.log('Registration success:', data.message);
-                    // Optionally redirect to a new page or clear the form
-                    navigate('/Home');
+                    // Store username in localStorage
+                    localStorage.setItem('username', username);
+                    // Explicitly set profile to null for new registrations
+                    dispatch({ type: 'SET_PROFILE', payload: null });
+                    // Navigate to profile setup page
+                    navigate('/Home/profile');
                 }
             } catch (error) {
                 console.error('Network error:', error);
